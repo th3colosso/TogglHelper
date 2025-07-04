@@ -158,7 +158,7 @@ object frameEntry: TframeEntry
     TabOrder = 5
   end
   object cbPush: TCheckBox
-    Left = 224
+    Left = 410
     Top = 16
     Width = 97
     Height = 17

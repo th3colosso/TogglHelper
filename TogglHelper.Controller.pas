@@ -143,6 +143,9 @@ end;
 
 procedure TToggleController.LoadConfig;
 begin
+  if not FileExists(FConfigFile) then
+    Exit;
+
   var Stream := TStringStream.Create;
   try
     Stream.LoadFromFile(FConfigFile);
