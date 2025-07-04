@@ -1,27 +1,36 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.MainView.pas',0,1,186,47,170,0,0,,
-File_1=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Controller.pas',0,1,116,1,126,0,0,,
-File_2=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Projects.pas',0,1,8,33,35,0,0,,
-File_3=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Tags.pas',0,1,1,35,69,0,0,,
-File_4=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\net\System.Net.URLClient.pas',0,1,2089,1,2107,0,0,,
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\VCL\Vcl.Controls.pas',0,1,7692,1,7708,0,0,,
-File_6=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.FrameEntry.pas',0,1,7,20,33,0,0,,
-File_7=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,27966,20,27992,0,0,,
-File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.pas',0,1,18353,1,18372,0,0,,
-File_9=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.DateUtils.pas',0,1,224,17,240,0,0,,
-File_10=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.User.pas',0,1,34,69,55,0,0,,
-File_11=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.JSON.pas',0,1,2576,1,2595,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.JSON.pas',0,1,3363,1,3381,0,0,,
+File_1=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.FrameEntry.pas',0,1,7,20,33,0,0,,
+File_2=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\VCL\Vcl.StdCtrls.pas',0,1,804,1,822,0,0,{{1773,4}
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\VCL\Vcl.Forms.pas',0,1,197,1,215,0,0,{{1990,4}
+File_4=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Projects.pas',0,1,13,26,41,0,0,,
+File_5=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Tags.pas',0,1,1,35,69,0,0,,
+File_6=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\net\System.Net.URLClient.pas',0,1,2089,1,2107,0,0,,
+File_7=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\VCL\Vcl.Controls.pas',0,1,7692,1,7708,0,0,,
+File_8=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.SysUtils.pas',0,1,27966,20,27992,0,0,,
+File_9=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\RTL\SYS\System.pas',0,1,18353,1,18372,0,0,,
+File_10=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\common\System.DateUtils.pas',0,1,224,17,240,0,0,,
+File_11=TSourceModule,'C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.User.pas',0,1,34,69,55,0,0,,
 File_12=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\SOURCE\VCL\Vcl.Dialogs.pas',0,1,6725,1,6744,0,0,,
 File_13=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\net\System.Net.HttpClient.pas',0,1,2037,29,2056,0,0,,
-File_14=TSourceModule,'c:\program files (x86)\embarcadero\studio\22.0\source\rtl\net\System.NetConsts.pas',0,1,175,1,192,0,0,,
 
 [Modules]
-Count=0
+Module0=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.MainView.pas
+Module1=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Controller.pas
+Count=2
 EditWindowCount=1
 
+[C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.MainView.pas]
+ModuleType=TSourceModule
+
+[C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Controller.pas]
+ModuleType=TSourceModule
+
 [EditWindow0]
-ViewCount=0
-CurrentView=-1
+ViewCount=2
+CurrentEditView=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.MainView.pas
+View0=0
+View1=1
 PercentageSizes=1
 Create=1
 Visible=1
@@ -40,16 +49,38 @@ BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
 LeftPanelSize=1895
 LeftPanelClients=PropertyInspector,DockSite3
-LeftPanelData=00000800010100000000E70B00000000000001670700000000000001000000004710000009000000446F636B53697465330100000000361C00001100000050726F7065727479496E73706563746F72FFFFFFFF
+LeftPanelData=00000800010100000000CF0B00000000000001670700000000000001000000004710000009000000446F636B53697465330100000000FF1B00001100000050726F7065727479496E73706563746F72FFFFFFFF
 RightPanelSize=1996
 RightPanelClients=DockSite2,DockSite4
-RightPanelData=00000800010100000000E70B00000000000001CC0700000000000001000000004412000009000000446F636B53697465320100000000361C000009000000446F636B5369746534FFFFFFFF
-BottomPanelSize=1519
+RightPanelData=00000800010100000000CF0B00000000000001CC0700000000000001000000004412000009000000446F636B53697465320100000000FF1B000009000000446F636B5369746534FFFFFFFF
+BottomPanelSize=1574
 BottomPanelClients=MessageView,DockSite1
-BottomPanelData=0000080001020100000009000000446F636B5369746531045C00000000000002EF050000000000000100000000045C00000F0000004D65737361676556696577466F726DFFFFFFFF
+BottomPanelData=0000080001020100000009000000446F636B5369746531045C0000000000000226060000000000000100000000045C00000F0000004D65737361676556696577466F726DFFFFFFFF
 BottomMiddlePanelSize=0
 BottomMiddlePanelClients=DockSite0,GraphDrawingModel
 BottomMiddelPanelData=0000080001020200000009000000446F636B536974653010000000477261706844726177696E67566965779F1D00000000000002F206000000000000FFFFFFFF
+
+[View0]
+CustomEditViewType=TEditView
+Module=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Controller.pas
+CursorX=69
+CursorY=65
+TopLine=56
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.Controller.pas
+
+[View1]
+CustomEditViewType=TEditView
+Module=C:\Users\030900142024\OneDrive - CGM\Documents\Matheus\Solutions\TogglHelper\TogglHelper.MainView.pas
+CursorX=60
+CursorY=101
+TopLine=79
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Borland.FormDesignerView
 
 [Watches]
 Count=0
@@ -132,12 +163,12 @@ State=0
 Left=0
 Top=28
 Width=9938
-Height=1318
+Height=1376
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=9938
-ClientHeight=1318
-TBDockHeight=1318
+ClientHeight=1376
+TBDockHeight=1376
 LRDockWidth=2770
 Dockable=1
 StayOnTop=0
@@ -151,11 +182,11 @@ State=0
 Left=0
 Top=0
 Width=1996
-Height=2393
+Height=2335
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1996
-ClientHeight=2393
+ClientHeight=2335
 TBDockHeight=7151
 LRDockWidth=1996
 Dockable=1
@@ -170,16 +201,21 @@ State=0
 Left=0
 Top=478
 Width=1895
-Height=2926
+Height=2868
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1895
-ClientHeight=2926
+ClientHeight=2868
 TBDockHeight=6870
 LRDockWidth=1895
 Dockable=1
 StayOnTop=0
 SplitPos=236
+
+[PropInspDesignerSelection]
+ArrangeBy=Name
+SelectedItem=Anchors.akTop,
+ExpandedItems=HorzScrollBar=0,LiveBindings=0,"LiveBindings Designer=0",Margins=0,Padding=0,LookAndFeel=0,Options=0,Anchors=1,Constraints=1,StyleElements=0,Font=0,ImageMargins=0,BorderIcons=0,BevelEdges=0
 
 [frmDesignPreview]
 PercentageSizes=1
@@ -735,11 +771,11 @@ State=0
 Left=0
 Top=533
 Width=1996
-Height=2393
+Height=2335
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1996
-ClientHeight=2393
+ClientHeight=2335
 TBDockHeight=6870
 LRDockWidth=1996
 Dockable=1

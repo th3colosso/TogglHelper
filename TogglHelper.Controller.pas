@@ -10,6 +10,7 @@ type
   TToggleController = class
   private
     FConfigFile: string;
+    FEntriesFile: string;
     FUser: TTogglUser;
     FApiToken: string;
     FProjects: TTogglProjects;
@@ -17,8 +18,6 @@ type
     FResponse: TStringList;
     FTags: TTogglTags;
     procedure SetApiToken(const AValue: string);
-    procedure FreeClasses;
-    procedure CreateClasses;
     procedure SaveConfig;
     procedure LoadConfig;
     procedure SetClientHeaders;
@@ -26,6 +25,7 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure Reset;
+    procedure RealoadLastEntries(AContainer: TComponent);
     procedure PushAllEntries(AContainer: TComponent; ADate: TDateTime);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
@@ -41,48 +41,104 @@ implementation
 
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
-  System.JSON, System.DateUtils, Vcl.Dialogs;
+  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls;
 
 { TToggleController }
 
+procedure TToggleController.RealoadLastEntries(AContainer: TComponent);
+begin
+  if not FileExists(FEntriesFile) then
+    Exit;
+
+  if AContainer.ComponentCount > 0 then
+    Exit;
+
+  TThread.Synchronize(nil,
+  procedure
+  begin
+    var Stream := TStringStream.Create;
+    Stream.LoadFromFile(FEntriesFile);
+    var JArray: TJsonArray;
+    try
+      JArray := TJSONObject.ParseJSONValue(Stream.DataString) as TJsonArray;
+    finally
+      Stream.Free;
+    end;
+
+    try
+      for var JObj in JArray do
+      begin
+        var Entry := TframeEntry.Create(AContainer);
+        (AContainer as TScrollBox).VertScrollBar.Range := (AContainer as TScrollBox).VertScrollBar.Range + Entry.Height;
+        Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
+        Entry.Parent := (AContainer as TScrollBox);
+
+        var JEntry := '';
+        JObj.TryGetValue<string>('description', JEntry);
+        Entry.edtEntry.Text := JEntry;
+
+        for var Key in SingletonToggl.Projects.List.Keys.ToArray do
+          Entry.cbPrj.Items.Add(Key);
+
+        var PrjID := 0;
+        JObj.TryGetValue<Integer>('cb_prj_id', PrjID);
+        Entry.cbPrj.ItemIndex := PrjID;
+
+        for var Key in SingletonToggl.Tags.List.Keys.ToArray do
+          Entry.cbTag.Items.Add(Key);
+
+        var TagID := 0;
+        JObj.TryGetValue<Integer>('cb_tag_id', TagID);
+        Entry.cbTag.ItemIndex := TagID;
+
+        var EntryTime: Double := 0.0;
+        if JObj.TryGetValue<Double>('time_start', EntryTime) then
+          Entry.tpStart.Time := EntryTime
+        else
+          Entry.tpStart.Time := Time;
+
+        EntryTime := 0.0;
+        if JObj.TryGetValue<Double>('time_stop', EntryTime) then
+          Entry.tpStop.Time := EntryTime
+        else
+          Entry.tpStop.Time := IncHour(Time, -1);
+      end;
+    finally
+      JArray.Free;
+    end;
+  end
+  );
+end;
+
 procedure TToggleController.Reset;
 begin
-  FreeClasses;
-  CreateClasses;
+  FProjects.List.Clear;
+  FTags.List.Clear;
 end;
 
 constructor TToggleController.Create;
 begin
   FConfigFile := 'config.json';
+  FEntriesFile := 'entries.json';
   FResponse := TStringList.Create;
   FClient := THTTPClient.Create;
 
   FUser := TTogglUser.Create(FClient, FResponse);
-  CreateClasses;
-  LoadConfig;
-end;
-
-procedure TToggleController.CreateClasses;
-begin
   FProjects := TTogglProjects.Create(FClient, FResponse);
   FTags := TTogglTags.Create(FClient, FResponse);
+  LoadConfig;
 end;
 
 destructor TToggleController.Destroy;
 begin
   SaveConfig;
-  FreeClasses;
+  FProjects.Free;
+  FTags.Free;
   FClient.Free;
   FUser.Free;
   FResponse.Free;
 
   inherited;
-end;
-
-procedure TToggleController.FreeClasses;
-begin
-  FProjects.Free;
-  FTags.Free;
 end;
 
 procedure TToggleController.LoadConfig;
@@ -105,13 +161,14 @@ end;
 
 procedure TToggleController.PushAllEntries(AContainer: TComponent; ADate: TDateTime);
 begin
-  for var i := Pred(AContainer.ComponentCount) downto 0 do
-  begin
-    var Entry := (AContainer.Components[i] as TframeEntry);
-    var TagArray := TJSONArray.Create;
-    var JString := TStringList.Create;
-    var JObj := TJSONObject.Create;
-    try
+  var JEntries := TJsonArray.Create;
+  var JString := TStringStream.Create;
+  try
+    for var i := Pred(AContainer.ComponentCount) downto 0 do
+    begin
+      var Entry := (AContainer.Components[i] as TframeEntry);
+      var TagArray := TJSONArray.Create;
+      var JObj := TJSONObject.Create;
       JObj.AddPair('created_with', 'TogglHelper');
       JObj.AddPair('description', Entry.edtEntry.Text);
 
@@ -136,14 +193,29 @@ begin
       if FProjects.List.TryGetValue(PrjKey, PrjID) then
         JObj.AddPair('project_id', PrjID);
 
-      JString.Add(JObj.Format(4));
-      JString.SaveToFile('EntriesJson.txt');
+      JString.Clear;
+      JString.WriteString(JObj.Format(4));
+      JString.SaveToFile('body.json');
 
-      var Response := FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'EntriesJson.txt');
-    finally
-      JString.Free;
-      JObj.Free;
+      JObj.AddPair('cb_prj_id', Entry.cbPrj.ItemIndex);
+      JObj.AddPair('cb_tag_id', Entry.cbTag.ItemIndex);
+      JObj.AddPair('time_start', Entry.tpStart.Time);
+      JObj.AddPair('time_stop', Entry.tpStop.Time);
+
+      JEntries.Add(JObj);
+
+      if Entry.cbPush.checked then
+        continue;
+
+      var Response := FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'body.json');
     end;
+
+    JString.Clear;
+    JString.WriteString(JEntries.Format(4));
+    JString.SaveToFile(FEntriesFile);
+  finally
+    JString.Free;
+    JEntries.Free;
   end;
 end;
 
@@ -152,26 +224,6 @@ begin
   var JConfig := TJSONObject.Create;
   try
     JConfig.AddPair('api_token', FApiToken);
-
-    var JPrjArray := TJsonArray.Create;
-    for var Pair in FProjects.List do
-    begin
-      var JPrj := TJSONObject.Create;
-      JPrj.AddPair('name', Pair.Key);
-      JPrj.AddPair('id', Pair.Value);
-      JPrjArray.Add(JPrj);
-    end;
-    JConfig.AddPair('projects', JPrjArray);
-
-    var JTagArray := TJsonArray.Create;
-    for var Pair in FTags.List do
-    begin
-      var JTag := TJSONObject.Create;
-      JTag.AddPair('name', Pair.Key);
-      JTag.AddPair('id', Pair.Value);
-      JTagArray.Add(JTag);
-    end;
-    JConfig.AddPair('tags', JTagArray);
 
     var Stream := TStringStream.Create(JConfig.Format(2));
     try

@@ -105,6 +105,7 @@ object frameEntry: TframeEntry
     Width = 297
     Height = 23
     Style = csDropDownList
+    Sorted = True
     TabOrder = 1
   end
   object cbBillable: TCheckBox
@@ -125,6 +126,7 @@ object frameEntry: TframeEntry
     Height = 23
     Style = csDropDownList
     Anchors = [akTop, akRight]
+    Sorted = True
     TabOrder = 3
   end
   object tpStart: TDateTimePicker
@@ -154,5 +156,15 @@ object frameEntry: TframeEntry
     Kind = dtkTime
     ParseInput = True
     TabOrder = 5
+  end
+  object cbPush: TCheckBox
+    Left = 224
+    Top = 16
+    Width = 97
+    Height = 17
+    Caption = 'Push to Toggl'
+    Checked = True
+    State = cbChecked
+    TabOrder = 6
   end
 end

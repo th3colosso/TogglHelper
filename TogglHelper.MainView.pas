@@ -40,7 +40,7 @@ type
     btnPush: TButton;
     lblData: TLabel;
     dpBase: TDatePicker;
-    actIndPush: TActivityIndicator;
+    actIndIcator: TActivityIndicator;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -83,6 +83,7 @@ begin
   Entry.cbTag.ItemIndex := cbTags.ItemIndex;
   Entry.tpStart.Time := IncHour(Time, -1);
   Entry.tpStop.Time := Time;
+  Entry.edtEntry.Text := 'CGMSPR-123456 ';
 end;
 
 procedure TfrmMain.Authenticate;
@@ -132,14 +133,23 @@ end;
 
 procedure TfrmMain.btnPushClick(Sender: TObject);
 begin
+  TButton(Sender).Enabled := False;
   TTask.Run(
   procedure
   begin
-    actIndPush.Animate := True;
+    actIndIcator.Animate := True;
     try
+      var btn := TButton(Sender);
+      var CaptionOld := btn.Caption;
+      btn.Caption := 'Sending Entries...';
+      Sleep(500);
       SingletonToggl.PushAllEntries(sbEntries, dpBase.Date);
+      btn.Caption := 'Done';
+      Sleep(2000);
+      btn.Caption := CaptionOld;
+      btn.Enabled := True;
     finally
-      actIndPush.Animate := False;
+      actIndIcator.Animate := False;
     end;
   end
   );
@@ -156,6 +166,11 @@ begin
   begin
     edtApiToken.Text := SingletonToggl.ApiToken.Trim;
     Authenticate;
+
+    if SingletonToggl.User.ID > 0 then
+    begin
+      UpdateBaseData;
+    end;
   end;
 end;
 
@@ -182,6 +197,7 @@ begin
       begin
         pnlStatus.Caption := 'Updating data';
         pnlStatus.Color := clBlue;
+        Self.Caption := 'TogglHelper [authenticated]'
       end;
     TStatus.Complete:
       begin
@@ -220,7 +236,11 @@ begin
       cbTags.ItemIndex := 0;
       mmRes.Lines.Add(SingletonToggl.Response.Text);
 
+      SingletonToggl.RealoadLastEntries(sbEntries);
+
       UpdateStatus(TStatus.Complete);
+
+      Self.Caption := Self.Caption + ' [ready]';
     except
       on E: Exception do
       begin

@@ -21,6 +21,7 @@ type
     tpStart: TDateTimePicker;
     tpStop: TDateTimePicker;
     imgClose: TImage;
+    cbPush: TCheckBox;
     procedure imgCloseClick(Sender: TObject);
   end;
 

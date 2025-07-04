@@ -1,11 +1,14 @@
 object frmMain: TfrmMain
   Left = 0
   Top = 0
-  BorderStyle = bsSingle
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'TogglHelper'
-  ClientHeight = 410
-  ClientWidth = 793
+  ClientHeight = 408
+  ClientWidth = 792
   Color = clBtnFace
+  Constraints.MaxWidth = 800
+  Constraints.MinHeight = 420
+  Constraints.MinWidth = 800
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -18,13 +21,18 @@ object frmMain: TfrmMain
   object pcMain: TPageControl
     Left = 0
     Top = 0
-    Width = 793
-    Height = 410
+    Width = 792
+    Height = 408
     ActivePage = tsSettings
     Align = alClient
     TabOrder = 0
+    ExplicitWidth = 793
+    ExplicitHeight = 410
     object tsSettings: TTabSheet
       Caption = 'Settings'
+      DesignSize = (
+        784
+        378)
       object lblToken: TLabel
         Left = 36
         Top = 25
@@ -46,8 +54,12 @@ object frmMain: TfrmMain
         Top = 64
         Width = 701
         Height = 281
+        Anchors = [akLeft, akTop, akBottom]
         Caption = 'Result'
         TabOrder = 1
+        DesignSize = (
+          701
+          281)
         object lblFullName: TLabel
           Left = 24
           Top = 35
@@ -97,6 +109,7 @@ object frmMain: TfrmMain
           Top = 224
           Width = 561
           Height = 41
+          Anchors = [akLeft, akBottom]
           BevelOuter = bvNone
           Caption = 'No Update Status'
           Color = clGray
@@ -114,6 +127,7 @@ object frmMain: TfrmMain
           Top = 56
           Width = 289
           Height = 145
+          Anchors = [akLeft, akTop, akBottom]
           ReadOnly = True
           ScrollBars = ssBoth
           TabOrder = 3
@@ -152,12 +166,12 @@ object frmMain: TfrmMain
       object pnlDefault: TPanel
         Left = 0
         Top = 0
-        Width = 785
+        Width = 784
         Height = 73
         Margins.Right = 0
         Align = alTop
         TabOrder = 0
-        ExplicitTop = -6
+        ExplicitWidth = 785
         object lblProjects: TLabel
           Left = 16
           Top = 12
@@ -202,16 +216,16 @@ object frmMain: TfrmMain
         object btnAdd: TButton
           Left = 467
           Top = 42
-          Width = 102
+          Width = 94
           Height = 25
           Caption = 'Add Entry'
           TabOrder = 2
           OnClick = btnAddClick
         end
         object btnPush: TButton
-          Left = 616
+          Left = 629
           Top = 42
-          Width = 153
+          Width = 140
           Height = 25
           Caption = 'Push All Time Entries'
           TabOrder = 3
@@ -232,8 +246,8 @@ object frmMain: TfrmMain
           Font.Style = []
           TabOrder = 4
         end
-        object actIndPush: TActivityIndicator
-          Left = 586
+        object actIndIcator: TActivityIndicator
+          Left = 599
           Top = 43
           IndicatorSize = aisSmall
         end
@@ -241,8 +255,8 @@ object frmMain: TfrmMain
       object sbEntries: TScrollBox
         Left = 0
         Top = 73
-        Width = 785
-        Height = 307
+        Width = 784
+        Height = 305
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
@@ -251,8 +265,8 @@ object frmMain: TfrmMain
         DoubleBuffered = False
         ParentDoubleBuffered = False
         TabOrder = 1
-        ExplicitLeft = 3
-        ExplicitTop = 71
+        ExplicitWidth = 785
+        ExplicitHeight = 307
       end
     end
   end
