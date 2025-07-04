@@ -207,7 +207,7 @@ begin
 
       JEntries.Add(JObj);
 
-      if Entry.cbPush.checked then
+      if not Entry.cbPush.checked then
         continue;
 
       var Response := FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'body.json');
