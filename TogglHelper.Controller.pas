@@ -224,9 +224,12 @@ end;
 
 procedure TToggleController.SaveConfig;
 begin
+  if FApiToken.Trim.IsEmpty then
+    Exit;
+
   var JConfig := TJSONObject.Create;
   try
-    JConfig.AddPair('api_token', FApiToken);
+    JConfig.AddPair('api_token', FApiToken.Trim);
 
     var Stream := TStringStream.Create(JConfig.Format(2));
     try
