@@ -7,7 +7,6 @@ object frameEntry: TframeEntry
   Margins.Top = 5
   Margins.Right = 0
   Margins.Bottom = 5
-  Align = alTop
   Padding.Left = 3
   Padding.Top = 3
   Padding.Right = 3

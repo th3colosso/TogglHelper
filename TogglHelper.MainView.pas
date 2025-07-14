@@ -25,8 +25,8 @@ type
     edtApiToken: TEdit;
     pnlStatus: TPanel;
     mmRes: TMemo;
-    edtTogglID: TEdit;
-    lblWorkSpace_UserID: TLabel;
+    edtDefWorkSpaceID: TEdit;
+    lblWorkSpaceID: TLabel;
     lblResponseJson: TLabel;
     tsEntries: TTabSheet;
     pnlDefault: TPanel;
@@ -41,6 +41,8 @@ type
     lblData: TLabel;
     dpBase: TDatePicker;
     actIndIcator: TActivityIndicator;
+    lblUserID: TLabel;
+    edtUserID: TEdit;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -77,6 +79,7 @@ begin
   sbEntries.VertScrollBar.Range := sbEntries.VertScrollBar.Range + Entry.Height;
   Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
   Entry.Parent := sbEntries;
+  Entry.Align := altop;
   Entry.cbPrj.Items := cbProjects.Items;
   Entry.cbPrj.ItemIndex := cbProjects.ItemIndex;
   Entry.cbTag.Items := cbTags.Items;
@@ -107,7 +110,8 @@ begin
 
   edtFullName.Text := SingletonToggl.User.Name;
   edtEmail.Text := SingletonToggl.User.Email;
-  edtTogglID.Text := SingletonToggl.User.WorkspaceID.ToString + ' / ' + SingletonToggl.User.ID.ToString;
+  edtDefWorkSpaceID.Text := SingletonToggl.User.WorkspaceID.ToString;
+  edtUserID.Text := SingletonToggl.User.ID.ToString;
   mmRes.Lines.Text := SingletonToggl.Response.Text;
   btnUpdate.Enabled := True;
 
@@ -166,6 +170,10 @@ begin
   begin
     edtApiToken.Text := SingletonToggl.ApiToken.Trim;
     Authenticate;
+
+    {$IFDEF DEBUG}
+      Exit;
+    {$ENDIF}
 
     if SingletonToggl.User.ID > 0 then
     begin

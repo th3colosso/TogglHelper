@@ -41,7 +41,7 @@ implementation
 
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
-  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls;
+  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls, Vcl.Controls;
 
 { TToggleController }
 
@@ -72,6 +72,7 @@ begin
         (AContainer as TScrollBox).VertScrollBar.Range := (AContainer as TScrollBox).VertScrollBar.Range + Entry.Height;
         Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
         Entry.Parent := (AContainer as TScrollBox);
+        Entry.Align := alTop;
 
         var JEntry := '';
         JObj.TryGetValue<string>('description', JEntry);

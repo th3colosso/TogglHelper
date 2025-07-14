@@ -3,8 +3,8 @@ object frmMain: TfrmMain
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'TogglHelper'
-  ClientHeight = 408
-  ClientWidth = 792
+  ClientHeight = 625
+  ClientWidth = 784
   Color = clBtnFace
   Constraints.MaxWidth = 800
   Constraints.MinHeight = 420
@@ -21,18 +21,17 @@ object frmMain: TfrmMain
   object pcMain: TPageControl
     Left = 0
     Top = 0
-    Width = 792
-    Height = 408
+    Width = 784
+    Height = 625
     ActivePage = tsSettings
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 793
-    ExplicitHeight = 410
+    ExplicitHeight = 408
     object tsSettings: TTabSheet
       Caption = 'Settings'
       DesignSize = (
-        784
-        378)
+        776
+        595)
       object lblToken: TLabel
         Left = 36
         Top = 25
@@ -53,13 +52,14 @@ object frmMain: TfrmMain
         Left = 36
         Top = 64
         Width = 701
-        Height = 281
+        Height = 498
         Anchors = [akLeft, akTop, akBottom]
         Caption = 'Result'
         TabOrder = 1
+        ExplicitHeight = 281
         DesignSize = (
           701
-          281)
+          498)
         object lblFullName: TLabel
           Left = 24
           Top = 35
@@ -74,12 +74,12 @@ object frmMain: TfrmMain
           Height = 15
           Caption = 'Email'
         end
-        object lblWorkSpace_UserID: TLabel
+        object lblWorkSpaceID: TLabel
           Left = 24
-          Top = 147
-          Width = 106
+          Top = 203
+          Width = 113
           Height = 15
-          Caption = 'Workspace / User ID'
+          Caption = 'Default Workspace ID'
         end
         object lblResponseJson: TLabel
           Left = 400
@@ -87,6 +87,13 @@ object frmMain: TfrmMain
           Width = 50
           Height = 15
           Caption = 'Response'
+        end
+        object lblUserID: TLabel
+          Left = 24
+          Top = 147
+          Width = 37
+          Height = 15
+          Caption = 'User ID'
         end
         object edtFullName: TEdit
           Left = 24
@@ -106,7 +113,7 @@ object frmMain: TfrmMain
         end
         object pnlStatus: TPanel
           Left = 70
-          Top = 224
+          Top = 441
           Width = 561
           Height = 41
           Anchors = [akLeft, akBottom]
@@ -121,25 +128,35 @@ object frmMain: TfrmMain
           ParentBackground = False
           ParentFont = False
           TabOrder = 2
+          ExplicitTop = 607
         end
         object mmRes: TMemo
           Left = 400
           Top = 56
           Width = 289
-          Height = 145
+          Height = 362
           Anchors = [akLeft, akTop, akBottom]
           ReadOnly = True
           ScrollBars = ssBoth
           TabOrder = 3
           WordWrap = False
+          ExplicitHeight = 528
         end
-        object edtTogglID: TEdit
+        object edtDefWorkSpaceID: TEdit
+          Left = 24
+          Top = 224
+          Width = 345
+          Height = 23
+          ReadOnly = True
+          TabOrder = 4
+        end
+        object edtUserID: TEdit
           Left = 24
           Top = 168
           Width = 345
           Height = 23
           ReadOnly = True
-          TabOrder = 4
+          TabOrder = 5
         end
       end
       object edtApiToken: TEdit
@@ -166,12 +183,11 @@ object frmMain: TfrmMain
       object pnlDefault: TPanel
         Left = 0
         Top = 0
-        Width = 784
+        Width = 776
         Height = 73
         Margins.Right = 0
         Align = alTop
         TabOrder = 0
-        ExplicitWidth = 785
         object lblProjects: TLabel
           Left = 16
           Top = 12
@@ -255,8 +271,8 @@ object frmMain: TfrmMain
       object sbEntries: TScrollBox
         Left = 0
         Top = 73
-        Width = 784
-        Height = 305
+        Width = 776
+        Height = 522
         VertScrollBar.Smooth = True
         VertScrollBar.Tracking = True
         Align = alClient
@@ -265,8 +281,7 @@ object frmMain: TfrmMain
         DoubleBuffered = False
         ParentDoubleBuffered = False
         TabOrder = 1
-        ExplicitWidth = 785
-        ExplicitHeight = 307
+        ExplicitHeight = 305
       end
     end
   end
