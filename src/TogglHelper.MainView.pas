@@ -238,15 +238,13 @@ begin
     try
       //PROJECTS
       SingletonToggl.Projects.UpdateList;
-      for var Key in SingletonToggl.Projects.List.Keys.ToArray do
-        cbProjects.Items.Add(Key);
+      SingletonToggl.FillComboBox(cbProjects.Items, SingletonToggl.Projects.List.Keys.ToArray);
       cbProjects.ItemIndex := 0;
       mmRes.Lines.Add(SingletonToggl.Response.Text);
 
       //TAGS
       SingletonToggl.Tags.UpdateList;
-      for var Key in SingletonToggl.Tags.List.Keys.ToArray do
-        cbTags.Items.Add(Key);
+      SingletonToggl.FillComboBox(cbTags.Items, SingletonToggl.Tags.List.Keys.ToArray);
       cbTags.ItemIndex := 0;
       mmRes.Lines.Add(SingletonToggl.Response.Text);
 

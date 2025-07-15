@@ -27,6 +27,7 @@ type
     procedure Reset;
     procedure RealoadLastEntries(AContainer: TComponent);
     procedure PushAllEntries(AContainer: TComponent; ADate: TDateTime);
+    procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -78,16 +79,12 @@ begin
         JObj.TryGetValue<string>('description', JEntry);
         Entry.edtEntry.Text := JEntry;
 
-        for var Key in SingletonToggl.Projects.List.Keys.ToArray do
-          Entry.cbPrj.Items.Add(Key);
-
+        FillComboBox(Entry.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
         var PrjID := 0;
         JObj.TryGetValue<Integer>('cb_prj_id', PrjID);
         Entry.cbPrj.ItemIndex := PrjID;
 
-        for var Key in SingletonToggl.Tags.List.Keys.ToArray do
-          Entry.cbTag.Items.Add(Key);
-
+        FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
         var TagID := 0;
         JObj.TryGetValue<Integer>('cb_tag_id', TagID);
         Entry.cbTag.ItemIndex := TagID;
@@ -140,6 +137,12 @@ begin
   FResponse.Free;
 
   inherited;
+end;
+
+procedure TToggleController.FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
+begin
+  for var item in AItemArray do
+    AComboItems.Add(item);
 end;
 
 procedure TToggleController.LoadConfig;
