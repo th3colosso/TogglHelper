@@ -28,6 +28,7 @@ type
     procedure RealoadLastEntries(AContainer: TComponent);
     procedure PushAllEntries(AContainer: TComponent; ADate: TDateTime);
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
+    procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TComponent);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -57,7 +58,7 @@ begin
   TThread.Synchronize(nil,
   procedure
   begin
-    var Stream := TStringStream.Create;
+    var Stream := TStringStream.Create('', TEncoding.UTF8);
     Stream.LoadFromFile(FEntriesFile);
     var JArray: TJsonArray;
     try
@@ -169,9 +170,9 @@ end;
 procedure TToggleController.PushAllEntries(AContainer: TComponent; ADate: TDateTime);
 begin
   var JEntries := TJsonArray.Create;
-  var JString := TStringStream.Create;
+  var JString := TStringStream.Create('', TEncoding.UTF8);
   try
-    for var i := Pred(AContainer.ComponentCount) downto 0 do
+    for var i := 0 to Pred(AContainer.ComponentCount) do
     begin
       var Entry := (AContainer.Components[i] as TframeEntry);
       var TagArray := TJSONArray.Create;
@@ -214,7 +215,7 @@ begin
       if not Entry.cbPush.checked then
         continue;
 
-      var Response := FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'body.json');
+      FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'body.json');
     end;
 
     JString.Clear;
@@ -252,7 +253,16 @@ begin
   var AuthHeader := 'Basic ' + TNetEncoding.Base64.Encode(AuthValue);
   FClient.CustomHeaders['Authorization'] := AuthHeader;
   FClient.CustomHeaders['Host'] := 'api.track.toggl.com';
-  FClient.ContentType := 'application/json';
+  FClient.ContentType := 'application/json; charset=utf-8';
+end;
+
+procedure TToggleController.UpdateAllCombo(AItemIndex: Integer; AContainer: TComponent);
+begin
+  for var i := 0 to Pred(AContainer.ComponentCount) do
+  begin
+    var Entry := (AContainer.Components[i] as TframeEntry);
+    Entry.cbPrj.ItemIndex := AItemIndex;
+  end;
 end;
 
 procedure TToggleController.SetApiToken(const AValue: string);

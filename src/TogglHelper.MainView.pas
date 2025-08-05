@@ -49,6 +49,7 @@ type
     procedure btnPushClick(Sender: TObject);
     procedure btnUpdateClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure cbProjectsChange(Sender: TObject);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -168,6 +169,11 @@ end;
 procedure TfrmMain.btnUpdateClick(Sender: TObject);
 begin
   UpdateBaseData;
+end;
+
+procedure TfrmMain.cbProjectsChange(Sender: TObject);
+begin
+  SingletonToggl.UpdateAllCombo((Sender as TComboBox).ItemIndex, sbEntries);
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);

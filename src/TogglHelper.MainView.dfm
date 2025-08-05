@@ -214,6 +214,7 @@ object frmMain: TfrmMain
           Style = csDropDownList
           Sorted = True
           TabOrder = 0
+          OnChange = cbProjectsChange
         end
         object cbTags: TComboBox
           Left = 59
