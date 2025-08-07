@@ -79,6 +79,8 @@ begin
   var Entry := TframeEntry.Create(sbEntries);
   sbEntries.VertScrollBar.Range := sbEntries.VertScrollBar.Range + Entry.Height;
   Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
+  Entry.Tag := sbEntries.ComponentCount;
+  Entry.Top := Entry.Height * Entry.Tag;
   Entry.Parent := sbEntries;
   Entry.Align := altop;
   Entry.cbPrj.Items := cbProjects.Items;
@@ -88,6 +90,7 @@ begin
   Entry.tpStart.Time := IncHour(Time, -1);
   Entry.tpStop.Time := Time;
   Entry.edtEntry.Text := 'CGMSPR-123456 ';
+  Entry.OnTagChange := SingletonToggl.ReorderEntries;
 end;
 
 procedure TfrmMain.Authenticate;

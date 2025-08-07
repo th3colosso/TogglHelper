@@ -29,6 +29,7 @@ type
     procedure PushAllEntries(AContainer: TComponent; ADate: TDateTime);
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
     procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TComponent);
+    procedure ReorderEntries(AContainer: TComponent);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -43,7 +44,8 @@ implementation
 
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
-  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls, Vcl.Controls;
+  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls,
+  Vcl.Controls, System.Generics.Collections;
 
 { TToggleController }
 
@@ -76,6 +78,12 @@ begin
         Entry.Parent := (AContainer as TScrollBox);
         Entry.Align := alTop;
 
+        var JTag := 0;
+        if JObj.TryGetValue<Integer>('tag', JTag) then
+          Entry.Tag := JTag
+        else
+          Entry.Tag := AContainer.ComponentCount;
+
         var JEntry := '';
         JObj.TryGetValue<string>('description', JEntry);
         Entry.edtEntry.Text := JEntry;
@@ -101,12 +109,54 @@ begin
           Entry.tpStop.Time := EntryTime
         else
           Entry.tpStop.Time := IncHour(Time, -1);
+
+        Entry.OnTagChange := ReorderEntries;
       end;
     finally
       JArray.Free;
     end;
+    ReorderEntries(AContainer);
   end
   );
+end;
+
+procedure TToggleController.ReorderEntries(AContainer: TComponent);
+begin
+  if not (AContainer is TScrollBox) then
+    Exit;
+
+  var SB := AContainer as TScrollBox;
+  SB.LockDrawing;
+  try
+    var CompList := TList<TComponent>.Create;
+    try
+      for var i := 0 to SB.ComponentCount - 1 do
+      begin
+        if not (SB.Components[i] is TframeEntry) then
+          Continue;
+
+        CompList.Add(SB.Components[i]);
+        TframeEntry(SB.Components[i]).Parent := nil;
+      end;
+
+      for var i := 1 to SB.ComponentCount do
+      begin
+        for var j := 0 to CompList.Count - 1 do
+        begin
+          if CompList.Items[j].Tag = i then
+          begin
+            TFrameEntry(CompList.Items[j]).Parent := SB;
+            TFrameEntry(CompList.Items[j]).Top := TFrameEntry(CompList.Items[j]).Height * i;
+            Break;
+          end;
+        end;
+      end;
+    finally
+      CompList.Free;
+    end;
+  finally
+    SB.UnlockDrawing;
+  end;
 end;
 
 procedure TToggleController.Reset;
@@ -209,6 +259,7 @@ begin
       JObj.AddPair('cb_tag_id', Entry.cbTag.ItemIndex);
       JObj.AddPair('time_start', Entry.tpStart.Time);
       JObj.AddPair('time_stop', Entry.tpStop.Time);
+      JObj.AddPair('tag', Entry.Tag);
 
       JEntries.Add(JObj);
 

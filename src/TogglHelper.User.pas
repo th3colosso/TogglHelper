@@ -33,10 +33,14 @@ uses
 
 function TTogglUser.Authenticate: Boolean;
 begin
-  var Response := FClient.Get('https://api.track.toggl.com/api/v9/me');
-  RetrieveResponseValues(Response);
+  try
+    var Response := FClient.Get('https://api.track.toggl.com/api/v9/me');
+    RetrieveResponseValues(Response);
 
-  Result := Response.StatusCode = 200;
+    Result := Response.StatusCode = 200;
+  except
+    Result := False;
+  end;
 end;
 
 constructor TTogglUser.Create(AClient: THTTPClient; AResponse: TStringList);

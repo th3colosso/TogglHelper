@@ -21,6 +21,10 @@ object frameEntry: TframeEntry
     Width = 738
     Height = 121
     Align = alClient
+    Brush.Style = bsClear
+    DragMode = dmAutomatic
+    OnDragDrop = spBGDragDrop
+    OnDragOver = spBGDragOver
     ExplicitLeft = 0
     ExplicitTop = 0
   end
