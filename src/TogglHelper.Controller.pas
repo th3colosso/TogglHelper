@@ -17,6 +17,7 @@ type
     FClient: THTTPClient;
     FResponse: TStringList;
     FTags: TTogglTags;
+    FBaseDate: TDateTime;
     procedure SetApiToken(const AValue: string);
     procedure SaveConfig;
     procedure LoadConfig;
@@ -35,6 +36,7 @@ type
     property Projects: TTogglProjects read FProjects;
     property Tags: TTogglTags read FTags;
     property ApiToken: string read FApiToken write SetApiToken;
+    property BaseDate: TDateTime read FBaseDate;
   end;
 
 var
@@ -45,7 +47,7 @@ implementation
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
   System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls,
-  Vcl.Controls, System.Generics.Collections;
+  Vcl.Controls, System.Generics.Collections, TogglHelper.EntryAdapter;
 
 { TToggleController }
 
@@ -76,40 +78,9 @@ begin
         (AContainer as TScrollBox).VertScrollBar.Range := (AContainer as TScrollBox).VertScrollBar.Range + Entry.Height;
         Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
         Entry.Parent := (AContainer as TScrollBox);
+        Entry.Tag := AContainer.ComponentCount;
         Entry.Align := alTop;
-
-        var JTag := 0;
-        if JObj.TryGetValue<Integer>('tag', JTag) then
-          Entry.Tag := JTag
-        else
-          Entry.Tag := AContainer.ComponentCount;
-
-        var JEntry := '';
-        JObj.TryGetValue<string>('description', JEntry);
-        Entry.edtEntry.Text := JEntry;
-
-        FillComboBox(Entry.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
-        var PrjID := 0;
-        JObj.TryGetValue<Integer>('cb_prj_id', PrjID);
-        Entry.cbPrj.ItemIndex := PrjID;
-
-        FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
-        var TagID := 0;
-        JObj.TryGetValue<Integer>('cb_tag_id', TagID);
-        Entry.cbTag.ItemIndex := TagID;
-
-        var EntryTime: Double := 0.0;
-        if JObj.TryGetValue<Double>('time_start', EntryTime) then
-          Entry.tpStart.Time := EntryTime
-        else
-          Entry.tpStart.Time := Time;
-
-        EntryTime := 0.0;
-        if JObj.TryGetValue<Double>('time_stop', EntryTime) then
-          Entry.tpStop.Time := EntryTime
-        else
-          Entry.tpStop.Time := IncHour(Time, -1);
-
+        TEntryAdapter.FillEntryFromJSON(Entry, JObj as TJSONObject);
         Entry.OnTagChange := ReorderEntries;
       end;
     finally
@@ -219,47 +190,19 @@ end;
 
 procedure TToggleController.PushAllEntries(AContainer: TComponent; ADate: TDateTime);
 begin
+  FBaseDate := ADate;
   var JEntries := TJsonArray.Create;
   var JString := TStringStream.Create('', TEncoding.UTF8);
   try
     for var i := 0 to Pred(AContainer.ComponentCount) do
     begin
       var Entry := (AContainer.Components[i] as TframeEntry);
-      var TagArray := TJSONArray.Create;
       var JObj := TJSONObject.Create;
-      JObj.AddPair('created_with', 'TogglHelper');
-      JObj.AddPair('description', Entry.edtEntry.Text);
-
-      var TagKey := Entry.cbTag.Text;
-      var TagID := 0;
-      if FTags.List.TryGetValue(TagKey, TagID) then
-        TagArray.Add(TagID);
-      JObj.AddPair('tag_ids', TagArray);
-
-      JObj.AddPair('billable', Entry.cbBillable.Checked);
-      JObj.AddPair('workspace_id', FUser.WorkspaceID);
-      Jobj.AddPair('user_id', FUser.ID);
-
-      var Start: TDateTime := Entry.tpStart.Time + ADate;
-      var Stop: TDateTime := Entry.tpStop.Time + ADate;
-      var Duration := SecondsBetween(Start, Stop);
-      JObj.AddPair('duration', Duration);
-      JObj.AddPair('start', FormatDateTime('YYYY"-"MM"-"DD"T"HH":"NN":"SS"."000"-03:00"', Start));
-
-      var PrjKey := Entry.cbPrj.Text;
-      var PrjID := 0;
-      if FProjects.List.TryGetValue(PrjKey, PrjID) then
-        JObj.AddPair('project_id', PrjID);
+      TEntryAdapter.AddEntryToJSON(Entry, JObj);
 
       JString.Clear;
       JString.WriteString(JObj.Format(4));
       JString.SaveToFile('body.json');
-
-      JObj.AddPair('cb_prj_id', Entry.cbPrj.ItemIndex);
-      JObj.AddPair('cb_tag_id', Entry.cbTag.ItemIndex);
-      JObj.AddPair('time_start', Entry.tpStart.Time);
-      JObj.AddPair('time_stop', Entry.tpStop.Time);
-      JObj.AddPair('tag', Entry.Tag);
 
       JEntries.Add(JObj);
 
