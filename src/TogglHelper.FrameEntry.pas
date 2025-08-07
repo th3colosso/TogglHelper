@@ -28,9 +28,9 @@ type
     procedure spBGDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure spBGDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
   private
-    FOnTagChange: TProcObj;
+    FOnTagReorder: TProcObj;
   public
-    property OnTagChange: TProcObj read FOnTagChange write FOnTagChange;
+    property OnTagReorder: TProcObj read FOnTagReorder write FOnTagReorder;
   end;
 
 implementation
@@ -58,8 +58,8 @@ begin
   Src.Owner.Tag := Dest.Owner.Tag;
   Dest.Owner.Tag := tmpTag;
 
-  if Assigned(FOnTagChange) then
-    FOnTagChange(Src.Owner.Owner);
+  if Assigned(FOnTagReorder) then
+    FOnTagReorder(Src.Owner.Owner);
 end;
 
 procedure TframeEntry.spBGDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);

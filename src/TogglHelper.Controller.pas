@@ -80,8 +80,8 @@ begin
         Entry.Parent := (AContainer as TScrollBox);
         Entry.Tag := AContainer.ComponentCount;
         Entry.Align := alTop;
+        Entry.OnTagReorder := ReorderEntries;
         TEntryAdapter.FillEntryFromJSON(Entry, JObj as TJSONObject);
-        Entry.OnTagChange := ReorderEntries;
       end;
     finally
       JArray.Free;

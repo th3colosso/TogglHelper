@@ -88,7 +88,7 @@ begin
   Entry.tpStart.Time := IncHour(Time, -1);
   Entry.tpStop.Time := Time;
   Entry.edtEntry.Text := 'CGMSPR-123456 ';
-  Entry.OnTagChange := SingletonToggl.ReorderEntries;
+  Entry.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
 
 procedure TfrmMain.Authenticate;
