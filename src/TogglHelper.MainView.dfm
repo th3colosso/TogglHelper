@@ -191,13 +191,6 @@ object frmMain: TfrmMain
           Height = 15
           Caption = 'Project'
         end
-        object lblTag: TLabel
-          Left = 34
-          Top = 43
-          Width = 19
-          Height = 15
-          Caption = 'Tag'
-        end
         object lblData: TLabel
           Left = 437
           Top = 12
@@ -216,23 +209,13 @@ object frmMain: TfrmMain
           TabOrder = 0
           OnChange = cbProjectsChange
         end
-        object cbTags: TComboBox
-          Left = 59
-          Top = 40
-          Width = 302
-          Height = 23
-          AutoDropDown = True
-          Style = csDropDownList
-          Sorted = True
-          TabOrder = 1
-        end
         object btnAdd: TButton
           Left = 467
           Top = 42
           Width = 94
           Height = 25
           Caption = 'Add Entry'
-          TabOrder = 2
+          TabOrder = 1
           OnClick = btnAddClick
         end
         object btnPush: TButton
@@ -241,7 +224,7 @@ object frmMain: TfrmMain
           Width = 140
           Height = 25
           Caption = 'Push All Time Entries'
-          TabOrder = 3
+          TabOrder = 2
           OnClick = btnPushClick
         end
         object dpBase: TDatePicker
@@ -257,7 +240,7 @@ object frmMain: TfrmMain
           Font.Height = -12
           Font.Name = 'Segoe UI'
           Font.Style = []
-          TabOrder = 4
+          TabOrder = 3
         end
         object actIndicator: TActivityIndicator
           Left = 603

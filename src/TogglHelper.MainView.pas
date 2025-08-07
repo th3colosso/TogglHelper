@@ -34,8 +34,6 @@ type
     btnUpdate: TButton;
     cbProjects: TComboBox;
     sbEntries: TScrollBox;
-    cbTags: TComboBox;
-    lblTag: TLabel;
     btnAdd: TButton;
     btnPush: TButton;
     lblData: TLabel;
@@ -85,8 +83,8 @@ begin
   Entry.Align := altop;
   Entry.cbPrj.Items := cbProjects.Items;
   Entry.cbPrj.ItemIndex := cbProjects.ItemIndex;
-  Entry.cbTag.Items := cbTags.Items;
-  Entry.cbTag.ItemIndex := cbTags.ItemIndex;
+  SingletonToggl.FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
+  Entry.cbTag.ItemIndex := 0;
   Entry.tpStart.Time := IncHour(Time, -1);
   Entry.tpStop.Time := Time;
   Entry.edtEntry.Text := 'CGMSPR-123456 ';
@@ -124,7 +122,7 @@ end;
 
 procedure TfrmMain.btnAddClick(Sender: TObject);
 begin
-  if (cbProjects.Items.Count = 0) or (cbTags.Items.Count = 0) then
+  if (cbProjects.Items.Count = 0) then
   begin
     MessageDlg('Please Authenticate and Update Data first!', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
     pcMain.ActivePage := tsSettings;
@@ -253,9 +251,6 @@ begin
 
       //TAGS
       SingletonToggl.Tags.UpdateList;
-      SingletonToggl.FillComboBox(cbTags.Items, SingletonToggl.Tags.List.Keys.ToArray);
-      cbTags.ItemIndex := 0;
-      mmRes.Lines.Add(SingletonToggl.Response.Text);
 
       SingletonToggl.RealoadLastEntries(sbEntries);
 
