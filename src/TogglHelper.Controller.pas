@@ -18,10 +18,12 @@ type
     FResponse: TStringList;
     FTags: TTogglTags;
     FBaseDate: TDateTime;
+    FJSonBody: string;
     procedure SetApiToken(const AValue: string);
     procedure SaveConfig;
     procedure LoadConfig;
     procedure SetClientHeaders;
+    function GetAppFolder: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -48,7 +50,7 @@ uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
   System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls,
   Vcl.Controls, System.Generics.Collections, TogglHelper.EntryAdapter,
-  Vcl.Themes;
+  Vcl.Themes, System.IOUtils;
 
 { TToggleController }
 
@@ -142,8 +144,9 @@ end;
 
 constructor TToggleController.Create;
 begin
-  FConfigFile := 'config.json';
-  FEntriesFile := 'entries.json';
+  FConfigFile := GetAppFolder + '\config.json';
+  FEntriesFile := GetAppFolder + '\entries.json';
+  FJSonBody := GetAppFolder + '\body.json';
   FResponse := TStringList.Create;
   FClient := THTTPClient.Create;
 
@@ -169,6 +172,14 @@ procedure TToggleController.FillComboBox(AComboItems: TStrings; AItemArray: TArr
 begin
   for var item in AItemArray do
     AComboItems.Add(item);
+end;
+
+function TToggleController.GetAppFolder: string;
+begin
+  Result := IncludeTrailingPathDelimiter(TPath.GetHomePath) + TPath.GetFileNameWithoutExtension(Application.ExeName);
+
+  if not TDirectory.Exists(Result) then
+    TDirectory.CreateDirectory(Result);
 end;
 
 procedure TToggleController.LoadConfig;
@@ -211,14 +222,14 @@ begin
 
       JString.Clear;
       JString.WriteString(JObj.Format(4));
-      JString.SaveToFile('body.json');
+      JString.SaveToFile(FJSonBody);
 
       JEntries.Add(JObj);
 
       if not Entry.cbPush.checked then
         continue;
 
-      FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', 'body.json');
+      FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', FJSonBody);
     end;
 
     JString.Clear;
