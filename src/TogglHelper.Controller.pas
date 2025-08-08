@@ -19,6 +19,7 @@ type
     FTags: TTogglTags;
     FBaseDate: TDateTime;
     FJSonBody: string;
+    FStyleName: string;
     procedure SetApiToken(const AValue: string);
     procedure SaveConfig;
     procedure LoadConfig;
@@ -39,6 +40,7 @@ type
     property Tags: TTogglTags read FTags;
     property ApiToken: string read FApiToken write SetApiToken;
     property BaseDate: TDateTime read FBaseDate;
+    property StyleName: string read FStyleName write FStyleName;
   end;
 
 var
@@ -198,7 +200,10 @@ begin
 
       var AppStyle := EmptyStr;
       if JConfig.TryGetValue<string>('app_theme', AppStyle) then
+      begin
+        FStyleName := AppStyle;
         TStyleManager.TrySetStyle(AppStyle, False);
+      end;
 
     finally
       JConfig.Free;
@@ -249,7 +254,7 @@ begin
   var JConfig := TJSONObject.Create;
   try
     JConfig.AddPair('api_token', FApiToken.Trim);
-    JConfig.AddPair('app_theme', TStyleManager.ActiveStyle.Name);
+    JConfig.AddPair('app_theme', FStyleName);
 
     var Stream := TStringStream.Create(JConfig.Format(2));
     try

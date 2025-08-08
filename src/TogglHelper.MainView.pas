@@ -4,10 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TogglHelper.User, Vcl.WinXPickers, Vcl.ExtCtrls, Vcl.WinXCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TogglHelper.User, Vcl.WinXPickers,
+  Vcl.ExtCtrls, Vcl.WinXCtrls;
 
 type
-
 {$SCOPEDENUMS ON}
   TStatus = (NoStatus, Authenticated, Error, Updating, Complete);
 {$SCOPEDENUMS OFF}
@@ -185,7 +185,11 @@ end;
 
 procedure TfrmMain.cbStyleChange(Sender: TObject);
 begin
-  TStyleManager.TrySetStyle(cbStyle.Text, False);
+  if SingletonToggl.StyleName.Equals(cbStyle.Text) then
+    Exit;
+
+  SingletonToggl.StyleName := cbStyle.Text;
+  MessageDlg('Please restart app to apply changes!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
