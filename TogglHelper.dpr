@@ -7,8 +7,8 @@ uses
   TogglHelper.Controller in 'src\TogglHelper.Controller.pas',
   TogglHelper.Projects in 'src\TogglHelper.Projects.pas',
   TogglHelper.Tags in 'src\TogglHelper.Tags.pas',
-  TogglHelper.FrameEntry in 'src\TogglHelper.FrameEntry.pas' {frameEntry: TFrame},
-  TogglHelper.EntryAdapter in 'src\TogglHelper.EntryAdapter.pas',
+  TogglHelper.FrameEntry in 'src\TogglHelper.FrameEntry.pas' {FrameEntry: TFrame},
+  TogglHelper.EntryHelper in 'src\TogglHelper.EntryHelper.pas',
   Vcl.Themes,
   Vcl.Styles;
 

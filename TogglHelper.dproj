@@ -125,10 +125,10 @@
         <DCCReference Include="src\TogglHelper.Projects.pas"/>
         <DCCReference Include="src\TogglHelper.Tags.pas"/>
         <DCCReference Include="src\TogglHelper.FrameEntry.pas">
-            <Form>frameEntry</Form>
+            <Form>FrameEntry</Form>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="src\TogglHelper.EntryAdapter.pas"/>
+        <DCCReference Include="src\TogglHelper.EntryHelper.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
