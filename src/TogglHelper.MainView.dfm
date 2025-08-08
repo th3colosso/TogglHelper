@@ -169,11 +169,18 @@ object frmMain: TfrmMain
         Top = 416
         Width = 701
         Height = 89
-        Caption = 'Other'
+        Caption = 'Options'
         TabOrder = 4
+        object lblStyle: TLabel
+          Left = 24
+          Top = 27
+          Width = 62
+          Height = 15
+          Caption = 'App Theme'
+        end
         object cbStyle: TComboBox
           Left = 24
-          Top = 32
+          Top = 48
           Width = 221
           Height = 23
           Style = csDropDownList

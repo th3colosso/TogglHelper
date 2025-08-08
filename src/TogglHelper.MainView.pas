@@ -43,6 +43,7 @@ type
     actIndicator: TActivityIndicator;
     gbOther: TGroupBox;
     cbStyle: TComboBox;
+    lblStyle: TLabel;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
