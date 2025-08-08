@@ -23,7 +23,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 784
     Height = 625
-    ActivePage = tsEntries
+    ActivePage = tsSettings
     Align = alClient
     TabOrder = 0
     object tsSettings: TTabSheet
@@ -115,7 +115,8 @@ object frmMain: TfrmMain
           Width = 561
           Height = 41
           Anchors = [akLeft, akBottom]
-          BevelOuter = bvNone
+          BevelInner = bvLowered
+          BevelKind = bkSoft
           Caption = 'No Update Status'
           Color = clGray
           Font.Charset = DEFAULT_CHARSET

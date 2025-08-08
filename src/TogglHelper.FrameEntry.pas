@@ -10,23 +10,23 @@ type
   TProcObj = procedure(AComponent: TComponent) of object;
 
   TframeEntry = class(TFrame)
-    edtEntry: TEdit;
+    pnlMain: TPanel;
     lblTitle: TLabel;
-    spBG: TShape;
-    cbPrj: TComboBox;
-    cbBillable: TCheckBox;
     lblPrj: TLabel;
-    cbTag: TComboBox;
     lblTag: TLabel;
     lblFrom: TLabel;
     lblTo: TLabel;
+    imgClose: TImage;
+    edtEntry: TEdit;
+    cbPrj: TComboBox;
+    cbBillable: TCheckBox;
+    cbTag: TComboBox;
     tpStart: TDateTimePicker;
     tpStop: TDateTimePicker;
-    imgClose: TImage;
     cbPush: TCheckBox;
     procedure imgCloseClick(Sender: TObject);
-    procedure spBGDragDrop(Sender, Source: TObject; X, Y: Integer);
-    procedure spBGDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+    procedure pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
+    procedure pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
   private
     FOnTagReorder: TProcObj;
   public
@@ -46,31 +46,35 @@ begin
   Img.Owner.Free;
 end;
 
-procedure TframeEntry.spBGDragDrop(Sender, Source: TObject; X, Y: Integer);
+procedure TframeEntry.pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
 begin
-  if not ((Sender is TShape) and (Source is TShape)) then
+  if not ((Sender is TPanel) and (Source is TPanel)) then
     Exit;
 
-  var Src := Source as TShape;
-  var Dest := Sender as TShape;
+  var Src := Source as TPanel;
+  var Dest := Sender as TPanel;
 
   var tmpTag := Src.Owner.Tag;
   Src.Owner.Tag := Dest.Owner.Tag;
   Dest.Owner.Tag := tmpTag;
 
   if Assigned(FOnTagReorder) then
-    FOnTagReorder(Src.Owner.Owner);
+  begin
+    var Entry := Src.Owner;
+    if Assigned(Entry) then
+      FOnTagReorder(Entry.Owner);
+  end;
 end;
 
-procedure TframeEntry.spBGDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+procedure TframeEntry.pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
 begin
   Accept := False;
 
-  if not ((Sender is TShape) and (Source is TShape)) then
+  if not ((Sender is TPanel) and (Source is TPanel)) then
     Exit;
 
-  var Src := Source as TShape;
-  var Dest := Sender as TShape;
+  var Src := Source as TPanel;
+  var Dest := Sender as TPanel;
 
   if not Src.Owner.ClassNameIs('TframeEntry') then
     Exit;

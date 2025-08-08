@@ -93,6 +93,9 @@ end;
 
 procedure TToggleController.ReorderEntries(AContainer: TComponent);
 begin
+  if not Assigned(AContainer) then
+    Exit;
+
   if not (AContainer is TScrollBox) then
     Exit;
 
