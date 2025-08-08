@@ -102,10 +102,8 @@ object frameEntry: TframeEntry
       Width = 597
       Height = 23
       Anchors = [akLeft, akTop, akRight]
-      DragMode = dmAutomatic
       TabOrder = 0
       TextHint = 'Task Information (JIRA Ticket)'
-      ExplicitWidth = 601
     end
     object cbPrj: TComboBox
       Left = 24
@@ -126,7 +124,6 @@ object frameEntry: TframeEntry
       Checked = True
       State = cbChecked
       TabOrder = 2
-      ExplicitLeft = 521
     end
     object cbTag: TComboBox
       Left = 324
@@ -137,7 +134,6 @@ object frameEntry: TframeEntry
       Anchors = [akTop, akRight]
       Sorted = True
       TabOrder = 3
-      ExplicitLeft = 328
     end
     object tpStart: TDateTimePicker
       Left = 627
@@ -152,7 +148,6 @@ object frameEntry: TframeEntry
       Kind = dtkTime
       ParseInput = True
       TabOrder = 4
-      ExplicitLeft = 631
     end
     object tpStop: TDateTimePicker
       Left = 627
@@ -167,7 +162,6 @@ object frameEntry: TframeEntry
       Kind = dtkTime
       ParseInput = True
       TabOrder = 5
-      ExplicitLeft = 631
     end
     object cbPush: TCheckBox
       Left = 410
