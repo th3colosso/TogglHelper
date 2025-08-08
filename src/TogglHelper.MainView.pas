@@ -41,6 +41,8 @@ type
     lblUserID: TLabel;
     edtUserID: TEdit;
     actIndicator: TActivityIndicator;
+    gbOther: TGroupBox;
+    cbStyle: TComboBox;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -48,11 +50,13 @@ type
     procedure btnUpdateClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
+    procedure cbStyleChange(Sender: TObject);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
     procedure AddEntry;
     procedure UpdateStatus(AStatus: TStatus);
+    procedure LoadStyles;
   end;
 
 var
@@ -62,7 +66,7 @@ implementation
 
 uses
   System.Threading, System.UITypes, System.DateUtils,
-  TogglHelper.Controller, TogglHelper.FrameEntry;
+  TogglHelper.Controller, TogglHelper.FrameEntry, Vcl.Themes, Vcl.Styles;
 
 {$R *.dfm}
 
@@ -70,6 +74,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   pcMain.ActivePage := tsEntries;
   dpBase.Date := Date;
+  LoadStyles;
 end;
 
 procedure TfrmMain.AddEntry;
@@ -177,6 +182,11 @@ begin
   SingletonToggl.UpdateAllCombo((Sender as TComboBox).ItemIndex, sbEntries);
 end;
 
+procedure TfrmMain.cbStyleChange(Sender: TObject);
+begin
+  TStyleManager.TrySetStyle(cbStyle.Text, False);
+end;
+
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   if not SingletonToggl.ApiToken.Trim.IsEmpty then
@@ -193,6 +203,16 @@ begin
       UpdateBaseData;
     end;
   end;
+end;
+
+procedure TfrmMain.LoadStyles;
+begin
+  for var Style in TStyleManager.StyleNames do
+  begin
+    cbStyle.Items.Add(Style);
+  end;
+
+  cbStyle.ItemIndex := cbStyle.Items.IndexOf(TStyleManager.ActiveStyle.Name);
 end;
 
 procedure TfrmMain.UpdateStatus(AStatus: TStatus);

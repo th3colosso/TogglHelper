@@ -28,9 +28,6 @@ object frmMain: TfrmMain
     TabOrder = 0
     object tsSettings: TTabSheet
       Caption = 'Settings'
-      DesignSize = (
-        776
-        595)
       object lblToken: TLabel
         Left = 36
         Top = 25
@@ -51,13 +48,9 @@ object frmMain: TfrmMain
         Left = 36
         Top = 64
         Width = 701
-        Height = 498
-        Anchors = [akLeft, akTop, akBottom]
+        Height = 333
         Caption = 'Result'
         TabOrder = 1
-        DesignSize = (
-          701
-          498)
         object lblFullName: TLabel
           Left = 24
           Top = 35
@@ -110,11 +103,10 @@ object frmMain: TfrmMain
           TabOrder = 1
         end
         object pnlStatus: TPanel
-          Left = 70
-          Top = 441
-          Width = 561
+          Left = 24
+          Top = 269
+          Width = 345
           Height = 41
-          Anchors = [akLeft, akBottom]
           BevelInner = bvLowered
           BevelKind = bkSoft
           Caption = 'No Update Status'
@@ -132,8 +124,7 @@ object frmMain: TfrmMain
           Left = 400
           Top = 56
           Width = 289
-          Height = 362
-          Anchors = [akLeft, akTop, akBottom]
+          Height = 254
           ReadOnly = True
           ScrollBars = ssBoth
           TabOrder = 3
@@ -172,6 +163,23 @@ object frmMain: TfrmMain
         Enabled = False
         TabOrder = 3
         OnClick = btnUpdateClick
+      end
+      object gbOther: TGroupBox
+        Left = 36
+        Top = 416
+        Width = 701
+        Height = 89
+        Caption = 'Other'
+        TabOrder = 4
+        object cbStyle: TComboBox
+          Left = 24
+          Top = 32
+          Width = 221
+          Height = 23
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = cbStyleChange
+        end
       end
     end
     object tsEntries: TTabSheet

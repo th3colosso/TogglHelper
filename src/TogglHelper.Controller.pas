@@ -47,7 +47,8 @@ implementation
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
   System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls,
-  Vcl.Controls, System.Generics.Collections, TogglHelper.EntryAdapter;
+  Vcl.Controls, System.Generics.Collections, TogglHelper.EntryAdapter,
+  Vcl.Themes;
 
 { TToggleController }
 
@@ -183,6 +184,11 @@ begin
     try
       if JConfig.TryGetValue<string>('api_token', FApiToken) then
         SetClientHeaders;
+
+      var AppStyle := EmptyStr;
+      if JConfig.TryGetValue<string>('app_theme', AppStyle) then
+        TStyleManager.TrySetStyle(AppStyle, False);
+
     finally
       JConfig.Free;
     end;
@@ -232,6 +238,7 @@ begin
   var JConfig := TJSONObject.Create;
   try
     JConfig.AddPair('api_token', FApiToken.Trim);
+    JConfig.AddPair('app_theme', TStyleManager.ActiveStyle.Name);
 
     var Stream := TStringStream.Create(JConfig.Format(2));
     try
