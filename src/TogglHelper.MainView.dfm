@@ -23,7 +23,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 784
     Height = 625
-    ActivePage = tsSettings
+    ActivePage = tsEntries
     Align = alClient
     TabOrder = 0
     object tsSettings: TTabSheet
@@ -202,13 +202,13 @@ object frmMain: TfrmMain
         TabOrder = 0
         object lblProjects: TLabel
           Left = 16
-          Top = 12
+          Top = 46
           Width = 37
           Height = 15
           Caption = 'Project'
         end
         object lblData: TLabel
-          Left = 437
+          Left = 29
           Top = 12
           Width = 24
           Height = 15
@@ -216,7 +216,7 @@ object frmMain: TfrmMain
         end
         object cbProjects: TComboBox
           Left = 59
-          Top = 9
+          Top = 43
           Width = 302
           Height = 23
           AutoDropDown = True
@@ -244,7 +244,7 @@ object frmMain: TfrmMain
           OnClick = btnPushClick
         end
         object dpBase: TDatePicker
-          Left = 467
+          Left = 59
           Top = 9
           Width = 302
           Height = 25
@@ -263,6 +263,34 @@ object frmMain: TfrmMain
           Top = 43
           IndicatorSize = aisSmall
         end
+        object btnSort: TButton
+          Left = 671
+          Top = 11
+          Width = 94
+          Height = 25
+          Hint = 'In development'
+          Caption = 'Sort Entries'
+          TabOrder = 5
+          OnClick = btnSortClick
+        end
+        object btnEdit: TButton
+          Left = 571
+          Top = 11
+          Width = 94
+          Height = 25
+          Caption = 'Bulk Edit'
+          TabOrder = 6
+          OnClick = btnEditClick
+        end
+        object btnJira: TButton
+          Left = 467
+          Top = 11
+          Width = 94
+          Height = 25
+          Caption = 'Sync w/ JIRA'
+          Enabled = False
+          TabOrder = 7
+        end
       end
       object sbEntries: TScrollBox
         Left = 0
@@ -277,6 +305,8 @@ object frmMain: TfrmMain
         DoubleBuffered = False
         ParentDoubleBuffered = False
         TabOrder = 1
+        ExplicitLeft = -3
+        ExplicitTop = 79
       end
     end
   end

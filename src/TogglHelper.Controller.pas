@@ -240,6 +240,13 @@ begin
     begin
       var Entry := (AContainer.Components[i] as TFrameEntry);
       var JObj := TJSONObject.Create;
+
+      if Trim(Entry.edtEntry.Text).IsEmpty then
+      begin
+        JObj.Free;
+        Continue;
+      end;
+
       Entry.MapToJSON(JObj);
 
       JString.Clear;

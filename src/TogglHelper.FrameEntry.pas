@@ -9,7 +9,7 @@ uses
 type
   TProcObj = procedure(AComponent: TScrollBox) of object;
 
-  TframeEntry = class(TFrame)
+  TFrameEntry = class(TFrame)
     pnlMain: TPanel;
     lblTitle: TLabel;
     lblPrj: TLabel;
@@ -37,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TframeEntry.imgCloseClick(Sender: TObject);
+procedure TFrameEntry.imgCloseClick(Sender: TObject);
 var
   Img: TImage absolute Sender;
 begin
@@ -46,7 +46,7 @@ begin
   Img.Owner.Free;
 end;
 
-procedure TframeEntry.pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
+procedure TFrameEntry.pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
 begin
   if not ((Sender is TPanel) and (Source is TPanel)) then
     Exit;
@@ -69,7 +69,7 @@ begin
   end;
 end;
 
-procedure TframeEntry.pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+procedure TFrameEntry.pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
 begin
   Accept := False;
 

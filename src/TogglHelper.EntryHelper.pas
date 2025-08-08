@@ -7,7 +7,7 @@ uses
   System.JSON;
 
 type
-  TEntryHelper = class Helper for TframeEntry
+  TEntryHelper = class Helper for TFrameEntry
     procedure MapToJSON(AJSON: TJSONObject);
     procedure MapFromJson(AJSON: TJSONObject);
   end;

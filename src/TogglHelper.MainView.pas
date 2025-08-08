@@ -44,6 +44,9 @@ type
     gbOther: TGroupBox;
     cbStyle: TComboBox;
     lblStyle: TLabel;
+    btnSort: TButton;
+    btnEdit: TButton;
+    btnJira: TButton;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -52,6 +55,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
     procedure cbStyleChange(Sender: TObject);
+    procedure btnSortClick(Sender: TObject);
+    procedure btnEditClick(Sender: TObject);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -129,6 +134,11 @@ begin
   Authenticate;
 end;
 
+procedure TfrmMain.btnEditClick(Sender: TObject);
+begin
+  MessageDlg('Feature under development!', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+end;
+
 procedure TfrmMain.btnPushClick(Sender: TObject);
 begin
   TButton(Sender).Enabled := False;
@@ -155,6 +165,11 @@ begin
       end);
     end;
   end);
+end;
+
+procedure TfrmMain.btnSortClick(Sender: TObject);
+begin
+  SingletonToggl.ReorderEntries(sbEntries);
 end;
 
 procedure TfrmMain.btnUpdateClick(Sender: TObject);

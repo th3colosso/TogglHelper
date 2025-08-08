@@ -1,4 +1,4 @@
-object frameEntry: TframeEntry
+object FrameEntry: TFrameEntry
   Left = 0
   Top = 0
   Width = 744
