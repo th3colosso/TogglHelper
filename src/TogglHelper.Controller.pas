@@ -54,7 +54,8 @@ uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
   System.JSON, System.DateUtils, Vcl.Dialogs,
   System.Generics.Collections, TogglHelper.EntryHelper,
-  Vcl.Themes, System.IOUtils;
+  Vcl.Themes, System.IOUtils, System.Generics.Defaults,
+  System.Math;
 
 { TToggleController }
 
@@ -105,31 +106,30 @@ begin
 
   AContainer.LockDrawing;
   try
-    var CompList := TList<TComponent>.Create;
+    var FrameList := TList<TFrameEntry>.Create;
     try
       for var i := 0 to AContainer.ComponentCount - 1 do
       begin
-        if not (AContainer.Components[i] is TframeEntry) then
+        if not (AContainer.Components[i] is TFrameEntry) then
           Continue;
 
-        CompList.Add(AContainer.Components[i]);
+        FrameList.Add(AContainer.Components[i] as TFrameEntry);
         TframeEntry(AContainer.Components[i]).Parent := nil;
       end;
 
-      for var i := 1 to AContainer.ComponentCount do
-      begin
-        for var j := 0 to CompList.Count - 1 do
+      FrameList.Sort(TComparer<TFrameEntry>.Construct(
+        function(const Left, Right: TFrameEntry): Integer
         begin
-          if CompList.Items[j].Tag = i then
-          begin
-            TFrameEntry(CompList.Items[j]).Parent := AContainer;
-            TFrameEntry(CompList.Items[j]).Top := TFrameEntry(CompList.Items[j]).Height * i;
-            Break;
-          end;
-        end;
+          Result := CompareValue(Left.Tag, Right.Tag);
+        end));
+
+      for var i := 0 to Pred(FrameList.Count) do
+      begin
+        FrameList.Items[i].Parent := AContainer;
+        FrameList.Items[i].Top := FrameList.Items[i].Height * (i + 1);
       end;
     finally
-      CompList.Free;
+      FrameList.Free;
     end;
   finally
     AContainer.UnlockDrawing;
@@ -240,7 +240,7 @@ begin
     begin
       var Entry := (AContainer.Components[i] as TFrameEntry);
       var JObj := TJSONObject.Create;
-      (AContainer.Components[i] as TFrameEntry).MapToJSON(JObj);
+      Entry.MapToJSON(JObj);
 
       JString.Clear;
       JString.WriteString(JObj.Format(4));
