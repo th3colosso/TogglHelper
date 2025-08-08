@@ -80,21 +80,7 @@ end;
 
 procedure TfrmMain.AddEntry;
 begin
-  var Entry := TframeEntry.Create(sbEntries);
-  sbEntries.VertScrollBar.Range := sbEntries.VertScrollBar.Range + Entry.Height;
-  Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
-  Entry.Tag := sbEntries.ComponentCount;
-  Entry.Top := Entry.Height * Entry.Tag;
-  Entry.Parent := sbEntries;
-  Entry.Align := altop;
-  Entry.cbPrj.Items := cbProjects.Items;
-  Entry.cbPrj.ItemIndex := cbProjects.ItemIndex;
-  SingletonToggl.FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
-  Entry.cbTag.ItemIndex := 0;
-  Entry.tpStart.Time := IncHour(Time, -1);
-  Entry.tpStop.Time := Time;
-  Entry.edtEntry.Text := 'CGMSPR-123456 ';
-  Entry.OnTagReorder := SingletonToggl.ReorderEntries;
+  SingletonToggl.NewEntry(sbEntries, cbProjects.ItemIndex);
 end;
 
 procedure TfrmMain.Authenticate;
@@ -163,14 +149,12 @@ begin
       btn.Caption := CaptionOld;
       btn.Enabled := True;
       TThread.Synchronize(nil,
-        procedure
-        begin
-          actIndIcator.Animate := False;
-        end
-      );
+      procedure
+      begin
+        actIndIcator.Animate := False;
+      end);
     end;
-  end
-  );
+  end);
 end;
 
 procedure TfrmMain.btnUpdateClick(Sender: TObject);

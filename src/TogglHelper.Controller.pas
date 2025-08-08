@@ -4,7 +4,8 @@ interface
 
 uses
   System.Net.HttpClient, System.Net.URLClient, System.NetEncoding,
-  TogglHelper.User, TogglHelper.Projects, TogglHelper.Tags, System.Classes;
+  TogglHelper.User, TogglHelper.Projects, TogglHelper.Tags, System.Classes,
+  Vcl.StdCtrls, Vcl.Controls, Vcl.Forms;
 
 type
   TToggleController = class
@@ -29,11 +30,12 @@ type
     constructor Create;
     destructor Destroy; override;
     procedure Reset;
-    procedure RealoadLastEntries(AContainer: TComponent);
-    procedure PushAllEntries(AContainer: TComponent; ADate: TDateTime);
+    procedure NewEntry(AContainer: TScrollBox; ADefProjectIndex: Integer);
+    procedure RealoadLastEntries(AContainer: TScrollBox);
+    procedure PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
-    procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TComponent);
-    procedure ReorderEntries(AContainer: TComponent);
+    procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
+    procedure ReorderEntries(AContainer: TScrollBox);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -50,13 +52,13 @@ implementation
 
 uses
   System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
-  System.JSON, System.DateUtils, Vcl.Dialogs, Vcl.Forms, Vcl.StdCtrls,
-  Vcl.Controls, System.Generics.Collections, TogglHelper.EntryAdapter,
+  System.JSON, System.DateUtils, Vcl.Dialogs,
+  System.Generics.Collections, TogglHelper.EntryHelper,
   Vcl.Themes, System.IOUtils;
 
 { TToggleController }
 
-procedure TToggleController.RealoadLastEntries(AContainer: TComponent);
+procedure TToggleController.RealoadLastEntries(AContainer: TScrollBox);
 begin
   if not FileExists(FEntriesFile) then
     Exit;
@@ -80,13 +82,13 @@ begin
       for var JObj in JArray do
       begin
         var Entry := TframeEntry.Create(AContainer);
-        (AContainer as TScrollBox).VertScrollBar.Range := (AContainer as TScrollBox).VertScrollBar.Range + Entry.Height;
+        AContainer.VertScrollBar.Range := AContainer.VertScrollBar.Range + Entry.Height;
         Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
-        Entry.Parent := (AContainer as TScrollBox);
+        Entry.Parent := AContainer;
         Entry.Tag := AContainer.ComponentCount;
         Entry.Align := alTop;
         Entry.OnTagReorder := ReorderEntries;
-        TEntryAdapter.FillEntryFromJSON(Entry, JObj as TJSONObject);
+        Entry.MapFromJson(JObj as TJSONObject)
       end;
     finally
       JArray.Free;
@@ -96,35 +98,31 @@ begin
   );
 end;
 
-procedure TToggleController.ReorderEntries(AContainer: TComponent);
+procedure TToggleController.ReorderEntries(AContainer: TScrollBox);
 begin
   if not Assigned(AContainer) then
     Exit;
 
-  if not (AContainer is TScrollBox) then
-    Exit;
-
-  var SB := AContainer as TScrollBox;
-  SB.LockDrawing;
+  AContainer.LockDrawing;
   try
     var CompList := TList<TComponent>.Create;
     try
-      for var i := 0 to SB.ComponentCount - 1 do
+      for var i := 0 to AContainer.ComponentCount - 1 do
       begin
-        if not (SB.Components[i] is TframeEntry) then
+        if not (AContainer.Components[i] is TframeEntry) then
           Continue;
 
-        CompList.Add(SB.Components[i]);
-        TframeEntry(SB.Components[i]).Parent := nil;
+        CompList.Add(AContainer.Components[i]);
+        TframeEntry(AContainer.Components[i]).Parent := nil;
       end;
 
-      for var i := 1 to SB.ComponentCount do
+      for var i := 1 to AContainer.ComponentCount do
       begin
         for var j := 0 to CompList.Count - 1 do
         begin
           if CompList.Items[j].Tag = i then
           begin
-            TFrameEntry(CompList.Items[j]).Parent := SB;
+            TFrameEntry(CompList.Items[j]).Parent := AContainer;
             TFrameEntry(CompList.Items[j]).Top := TFrameEntry(CompList.Items[j]).Height * i;
             Break;
           end;
@@ -134,7 +132,7 @@ begin
       CompList.Free;
     end;
   finally
-    SB.UnlockDrawing;
+    AContainer.UnlockDrawing;
   end;
 end;
 
@@ -189,7 +187,7 @@ begin
   if not FileExists(FConfigFile) then
     Exit;
 
-  var Stream := TStringStream.Create;
+  var Stream := TStringStream.Create('', TEncoding.UTF8);
   try
     Stream.LoadFromFile(FConfigFile);
 
@@ -213,7 +211,26 @@ begin
   end;
 end;
 
-procedure TToggleController.PushAllEntries(AContainer: TComponent; ADate: TDateTime);
+procedure TToggleController.NewEntry(AContainer: TScrollBox; ADefProjectIndex: Integer);
+begin
+  var Entry := TframeEntry.Create(AContainer);
+  AContainer.VertScrollBar.Range := AContainer.VertScrollBar.Range + Entry.Height;
+  Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
+  Entry.Tag := AContainer.ComponentCount;
+  Entry.Top := Entry.Height * Entry.Tag;
+  Entry.Parent := AContainer;
+  Entry.Align := altop;
+  SingletonToggl.FillComboBox(Entry.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
+  Entry.cbPrj.ItemIndex := ADefProjectIndex;
+  SingletonToggl.FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
+  Entry.cbTag.ItemIndex := 0;
+  Entry.tpStart.Time := IncHour(Time, -1);
+  Entry.tpStop.Time := Time;
+  Entry.edtEntry.Text := 'CGMSPR-123456 ';
+  Entry.OnTagReorder := SingletonToggl.ReorderEntries;
+end;
+
+procedure TToggleController.PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
 begin
   FBaseDate := ADate;
   var JEntries := TJsonArray.Create;
@@ -221,9 +238,9 @@ begin
   try
     for var i := 0 to Pred(AContainer.ComponentCount) do
     begin
-      var Entry := (AContainer.Components[i] as TframeEntry);
+      var Entry := (AContainer.Components[i] as TFrameEntry);
       var JObj := TJSONObject.Create;
-      TEntryAdapter.AddEntryToJSON(Entry, JObj);
+      (AContainer.Components[i] as TFrameEntry).MapToJSON(JObj);
 
       JString.Clear;
       JString.WriteString(JObj.Format(4));
@@ -256,7 +273,7 @@ begin
     JConfig.AddPair('api_token', FApiToken.Trim);
     JConfig.AddPair('app_theme', FStyleName);
 
-    var Stream := TStringStream.Create(JConfig.Format(2));
+    var Stream := TStringStream.Create(JConfig.Format(2), TEncoding.UTF8);
     try
       Stream.SaveToFile(FConfigFile);
     finally
@@ -276,7 +293,7 @@ begin
   FClient.ContentType := 'application/json; charset=utf-8';
 end;
 
-procedure TToggleController.UpdateAllCombo(AItemIndex: Integer; AContainer: TComponent);
+procedure TToggleController.UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
 begin
   for var i := 0 to Pred(AContainer.ComponentCount) do
   begin

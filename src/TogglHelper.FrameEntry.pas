@@ -7,7 +7,7 @@ uses
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXPickers, Vcl.ComCtrls, Vcl.Imaging.pngimage;
 
 type
-  TProcObj = procedure(AComponent: TComponent) of object;
+  TProcObj = procedure(AComponent: TScrollBox) of object;
 
   TframeEntry = class(TFrame)
     pnlMain: TPanel;
@@ -62,7 +62,10 @@ begin
   begin
     var Entry := Src.Owner;
     if Assigned(Entry) then
-      FOnTagReorder(Entry.Owner);
+    begin
+      if Entry.Owner is TScrollBox then
+        FOnTagReorder(Entry.Owner as TScrollBox);
+    end;
   end;
 end;
 
