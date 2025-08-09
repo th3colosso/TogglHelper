@@ -226,8 +226,8 @@ object frmMain: TfrmMain
           OnChange = cbProjectsChange
         end
         object btnAdd: TButton
-          Left = 467
-          Top = 42
+          Left = 471
+          Top = 11
           Width = 94
           Height = 25
           Caption = 'Add Entry'
@@ -235,9 +235,9 @@ object frmMain: TfrmMain
           OnClick = btnAddClick
         end
         object btnPush: TButton
-          Left = 629
+          Left = 571
           Top = 42
-          Width = 140
+          Width = 198
           Height = 25
           Caption = 'Push All Time Entries'
           TabOrder = 2
@@ -259,8 +259,8 @@ object frmMain: TfrmMain
           TabOrder = 3
         end
         object actIndicator: TActivityIndicator
-          Left = 603
-          Top = 43
+          Left = 541
+          Top = 42
           IndicatorSize = aisSmall
         end
         object btnSort: TButton
@@ -268,7 +268,6 @@ object frmMain: TfrmMain
           Top = 11
           Width = 94
           Height = 25
-          Hint = 'In development'
           Caption = 'Sort Entries'
           TabOrder = 5
           OnClick = btnSortClick
@@ -281,15 +280,6 @@ object frmMain: TfrmMain
           Caption = 'Bulk Edit'
           TabOrder = 6
           OnClick = btnEditClick
-        end
-        object btnJira: TButton
-          Left = 467
-          Top = 11
-          Width = 94
-          Height = 25
-          Caption = 'Sync w/ JIRA'
-          Enabled = False
-          TabOrder = 7
         end
       end
       object sbEntries: TScrollBox
@@ -305,9 +295,25 @@ object frmMain: TfrmMain
         DoubleBuffered = False
         ParentDoubleBuffered = False
         TabOrder = 1
-        ExplicitLeft = -3
-        ExplicitTop = 79
       end
+    end
+  end
+  object popSort: TPopupMenu
+    AutoHotkeys = maManual
+    TrackButton = tbLeftButton
+    Left = 424
+    Top = 36
+    object Description1: TMenuItem
+      Caption = 'Description'
+      OnClick = Description1Click
+    end
+    object Date1: TMenuItem
+      Caption = 'Time'
+      OnClick = Date1Click
+    end
+    object Tag1: TMenuItem
+      Caption = 'Tag'
+      OnClick = Tag1Click
     end
   end
 end

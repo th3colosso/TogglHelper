@@ -5,7 +5,7 @@ interface
 uses
   System.Net.HttpClient, System.Net.URLClient, System.NetEncoding,
   TogglHelper.User, TogglHelper.Projects, TogglHelper.Tags, System.Classes,
-  Vcl.StdCtrls, Vcl.Controls, Vcl.Forms;
+  Vcl.StdCtrls, Vcl.Controls, Vcl.Forms, TogglHelper.FrameEntry;
 
 type
   TToggleController = class
@@ -35,7 +35,7 @@ type
     procedure PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
     procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
-    procedure ReorderEntries(AContainer: TScrollBox);
+    procedure ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -51,7 +51,7 @@ var
 implementation
 
 uses
-  System.SysUtils, System.NetConsts, TogglHelper.FrameEntry,
+  System.SysUtils, System.NetConsts,
   System.JSON, System.DateUtils, Vcl.Dialogs,
   System.Generics.Collections, TogglHelper.EntryHelper,
   Vcl.Themes, System.IOUtils, System.Generics.Defaults,
@@ -99,7 +99,7 @@ begin
   );
 end;
 
-procedure TToggleController.ReorderEntries(AContainer: TScrollBox);
+procedure TToggleController.ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
 begin
   if not Assigned(AContainer) then
     Exit;
@@ -120,13 +120,21 @@ begin
       FrameList.Sort(TComparer<TFrameEntry>.Construct(
         function(const Left, Right: TFrameEntry): Integer
         begin
-          Result := CompareValue(Left.Tag, Right.Tag);
+          case ASortParam of
+            TSortParam.Default: Result := CompareValue(Left.Tag, Right.Tag);
+            TSortParam.Description: Result := CompareStr(Left.edtEntry.Text, Right.edtEntry.Text);
+            TSortParam.Time: Result := CompareTime(Left.tpStart.Time, Right.tpStart.Time);
+            TSortParam.Tag: Result := CompareStr(Left.cbTag.Text, Right.cbTag.Text);
+          else
+            Result := 0;
+          end;
         end));
 
       for var i := 0 to Pred(FrameList.Count) do
       begin
         FrameList.Items[i].Parent := AContainer;
-        FrameList.Items[i].Top := FrameList.Items[i].Height * (i + 1);
+        FrameList.Items[i].Tag := i + 1;
+        FrameList.Items[i].Top := FrameList.Items[i].Height * FrameList.Items[i].Tag;
       end;
     finally
       FrameList.Free;

@@ -4,10 +4,15 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXPickers, Vcl.ComCtrls, Vcl.Imaging.pngimage;
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXPickers,
+  Vcl.ComCtrls, Vcl.Imaging.pngimage;
 
 type
-  TProcObj = procedure(AComponent: TScrollBox) of object;
+{$SCOPEDENUMS ON}
+  TSortParam = (Default, Description, Time, Tag);
+{$SCOPEDENUMS OFF}
+
+  TProcReorder = procedure(AComponent: TScrollBox; ASortParam: TSortParam = TSortParam.Default) of object;
 
   TFrameEntry = class(TFrame)
     pnlMain: TPanel;
@@ -28,9 +33,9 @@ type
     procedure pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
   private
-    FOnTagReorder: TProcObj;
+    FOnTagReorder: TProcReorder;
   public
-    property OnTagReorder: TProcObj read FOnTagReorder write FOnTagReorder;
+    property OnTagReorder: TProcReorder read FOnTagReorder write FOnTagReorder;
   end;
 
 implementation

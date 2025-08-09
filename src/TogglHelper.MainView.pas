@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TogglHelper.User, Vcl.WinXPickers,
-  Vcl.ExtCtrls, Vcl.WinXCtrls;
+  Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.Menus;
 
 type
 {$SCOPEDENUMS ON}
@@ -46,7 +46,10 @@ type
     lblStyle: TLabel;
     btnSort: TButton;
     btnEdit: TButton;
-    btnJira: TButton;
+    popSort: TPopupMenu;
+    Date1: TMenuItem;
+    Description1: TMenuItem;
+    Tag1: TMenuItem;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -55,8 +58,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
     procedure cbStyleChange(Sender: TObject);
-    procedure btnSortClick(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
+    procedure btnSortClick(Sender: TObject);
+    procedure Description1Click(Sender: TObject);
+    procedure Date1Click(Sender: TObject);
+    procedure Tag1Click(Sender: TObject);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -169,7 +175,7 @@ end;
 
 procedure TfrmMain.btnSortClick(Sender: TObject);
 begin
-  SingletonToggl.ReorderEntries(sbEntries);
+  popSort.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
 
 procedure TfrmMain.btnUpdateClick(Sender: TObject);
@@ -189,6 +195,16 @@ begin
 
   SingletonToggl.StyleName := cbStyle.Text;
   MessageDlg('Please restart app to apply changes!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+end;
+
+procedure TfrmMain.Date1Click(Sender: TObject);
+begin
+  SingletonToggl.ReorderEntries(sbEntries, TSortParam.Time);
+end;
+
+procedure TfrmMain.Description1Click(Sender: TObject);
+begin
+  SingletonToggl.ReorderEntries(sbEntries, TSortParam.Description);
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -217,6 +233,11 @@ begin
   end;
 
   cbStyle.ItemIndex := cbStyle.Items.IndexOf(TStyleManager.ActiveStyle.Name);
+end;
+
+procedure TfrmMain.Tag1Click(Sender: TObject);
+begin
+  SingletonToggl.ReorderEntries(sbEntries, TSortParam.Tag);
 end;
 
 procedure TfrmMain.UpdateStatus(AStatus: TStatus);
