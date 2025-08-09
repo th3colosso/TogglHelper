@@ -209,7 +209,7 @@ object frmMain: TfrmMain
           OnChange = cbProjectsChange
         end
         object btnAdd: TButton
-          Left = 471
+          Left = 571
           Top = 11
           Width = 94
           Height = 25
@@ -254,15 +254,6 @@ object frmMain: TfrmMain
           Caption = 'Sort Entries'
           TabOrder = 5
           OnMouseDown = btnSortMouseDown
-        end
-        object btnEdit: TButton
-          Left = 571
-          Top = 11
-          Width = 94
-          Height = 25
-          Caption = 'Bulk Edit'
-          TabOrder = 6
-          OnClick = btnEditClick
         end
       end
       object sbEntries: TScrollBox

@@ -43,7 +43,6 @@ type
     cbStyle: TComboBox;
     lblStyle: TLabel;
     btnSort: TButton;
-    btnEdit: TButton;
     popSort: TPopupMenu;
     Date1: TMenuItem;
     Description1: TMenuItem;
@@ -57,7 +56,6 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
     procedure cbStyleChange(Sender: TObject);
-    procedure btnEditClick(Sender: TObject);
     procedure Description1Click(Sender: TObject);
     procedure Date1Click(Sender: TObject);
     procedure Tag1Click(Sender: TObject);
@@ -139,11 +137,6 @@ end;
 procedure TfrmMain.btnAuthClick(Sender: TObject);
 begin
   Authenticate;
-end;
-
-procedure TfrmMain.btnEditClick(Sender: TObject);
-begin
-  MessageDlg('Feature under development', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
 end;
 
 procedure TfrmMain.btnPushClick(Sender: TObject);
