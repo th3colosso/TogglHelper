@@ -47,7 +47,7 @@ object frmMain: TfrmMain
       object gbResult: TGroupBox
         Left = 36
         Top = 64
-        Width = 701
+        Width = 333
         Height = 333
         Caption = 'Result'
         TabOrder = 1
@@ -72,13 +72,6 @@ object frmMain: TfrmMain
           Height = 15
           Caption = 'Default Workspace ID'
         end
-        object lblResponseJson: TLabel
-          Left = 400
-          Top = 35
-          Width = 50
-          Height = 15
-          Caption = 'Response'
-        end
         object lblUserID: TLabel
           Left = 24
           Top = 147
@@ -89,7 +82,7 @@ object frmMain: TfrmMain
         object edtFullName: TEdit
           Left = 24
           Top = 56
-          Width = 345
+          Width = 277
           Height = 23
           ReadOnly = True
           TabOrder = 0
@@ -97,7 +90,7 @@ object frmMain: TfrmMain
         object edtEmail: TEdit
           Left = 24
           Top = 112
-          Width = 345
+          Width = 277
           Height = 23
           ReadOnly = True
           TabOrder = 1
@@ -105,7 +98,7 @@ object frmMain: TfrmMain
         object pnlStatus: TPanel
           Left = 24
           Top = 269
-          Width = 345
+          Width = 277
           Height = 41
           BevelInner = bvLowered
           BevelKind = bkSoft
@@ -120,31 +113,21 @@ object frmMain: TfrmMain
           ParentFont = False
           TabOrder = 2
         end
-        object mmRes: TMemo
-          Left = 400
-          Top = 56
-          Width = 289
-          Height = 254
-          ReadOnly = True
-          ScrollBars = ssBoth
-          TabOrder = 3
-          WordWrap = False
-        end
         object edtDefWorkSpaceID: TEdit
           Left = 24
           Top = 224
-          Width = 345
+          Width = 277
           Height = 23
           ReadOnly = True
-          TabOrder = 4
+          TabOrder = 3
         end
         object edtUserID: TEdit
           Left = 24
           Top = 168
-          Width = 345
+          Width = 277
           Height = 23
           ReadOnly = True
-          TabOrder = 5
+          TabOrder = 4
         end
       end
       object edtApiToken: TEdit
@@ -165,10 +148,10 @@ object frmMain: TfrmMain
         OnClick = btnUpdateClick
       end
       object gbOther: TGroupBox
-        Left = 36
-        Top = 416
-        Width = 701
-        Height = 89
+        Left = 404
+        Top = 64
+        Width = 333
+        Height = 333
         Caption = 'Options'
         TabOrder = 4
         object lblStyle: TLabel
@@ -270,7 +253,7 @@ object frmMain: TfrmMain
           Height = 25
           Caption = 'Sort Entries'
           TabOrder = 5
-          OnClick = btnSortClick
+          OnMouseDown = btnSortMouseDown
         end
         object btnEdit: TButton
           Left = 571
@@ -301,7 +284,7 @@ object frmMain: TfrmMain
   object popSort: TPopupMenu
     AutoHotkeys = maManual
     TrackButton = tbLeftButton
-    Left = 424
+    Left = 440
     Top = 36
     object Description1: TMenuItem
       Caption = 'Description'
@@ -318,7 +301,7 @@ object frmMain: TfrmMain
   end
   object NC: TNotificationCenter
     OnReceiveLocalNotification = NCReceiveLocalNotification
-    Left = 428
-    Top = 96
+    Left = 384
+    Top = 36
   end
 end

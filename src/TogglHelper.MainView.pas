@@ -24,10 +24,8 @@ type
     edtEmail: TEdit;
     edtApiToken: TEdit;
     pnlStatus: TPanel;
-    mmRes: TMemo;
     edtDefWorkSpaceID: TEdit;
     lblWorkSpaceID: TLabel;
-    lblResponseJson: TLabel;
     tsEntries: TTabSheet;
     pnlDefault: TPanel;
     lblProjects: TLabel;
@@ -60,11 +58,11 @@ type
     procedure cbProjectsChange(Sender: TObject);
     procedure cbStyleChange(Sender: TObject);
     procedure btnEditClick(Sender: TObject);
-    procedure btnSortClick(Sender: TObject);
     procedure Description1Click(Sender: TObject);
     procedure Date1Click(Sender: TObject);
     procedure Tag1Click(Sender: TObject);
     procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
+    procedure btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -113,7 +111,6 @@ begin
   if not SingletonToggl.User.Authenticate then
   begin
     btnUpdate.Enabled := False;
-    mmRes.Lines.Text := SingletonToggl.Response.Text;
     UpdateStatus(TStatus.Error);
     Exit;
   end;
@@ -122,7 +119,6 @@ begin
   edtEmail.Text := SingletonToggl.User.Email;
   edtDefWorkSpaceID.Text := SingletonToggl.User.WorkspaceID.ToString;
   edtUserID.Text := SingletonToggl.User.ID.ToString;
-  mmRes.Lines.Text := SingletonToggl.Response.Text;
   btnUpdate.Enabled := True;
 
   UpdateStatus(TStatus.Authenticated);
@@ -178,7 +174,7 @@ begin
   end);
 end;
 
-procedure TfrmMain.btnSortClick(Sender: TObject);
+procedure TfrmMain.btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   popSort.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
 end;
@@ -319,7 +315,6 @@ begin
       SingletonToggl.Projects.UpdateList;
       SingletonToggl.FillComboBox(cbProjects.Items, SingletonToggl.Projects.List.Keys.ToArray);
       cbProjects.ItemIndex := 0;
-      mmRes.Lines.Add(SingletonToggl.Response.Text);
 
       //TAGS
       SingletonToggl.Tags.UpdateList;
@@ -333,7 +328,6 @@ begin
       on E: Exception do
       begin
         UpdateStatus(TStatus.Error);
-        mmRes.Text := E.Message;
       end;
     end;
   end
