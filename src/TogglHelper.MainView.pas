@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, TogglHelper.User, Vcl.WinXPickers,
-  Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.Menus;
+  Vcl.ExtCtrls, Vcl.WinXCtrls, Vcl.Menus, System.Notification;
 
 type
 {$SCOPEDENUMS ON}
@@ -50,6 +50,7 @@ type
     Date1: TMenuItem;
     Description1: TMenuItem;
     Tag1: TMenuItem;
+    NC: TNotificationCenter;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -63,12 +64,14 @@ type
     procedure Description1Click(Sender: TObject);
     procedure Date1Click(Sender: TObject);
     procedure Tag1Click(Sender: TObject);
+    procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
     procedure AddEntry;
     procedure UpdateStatus(AStatus: TStatus);
     procedure LoadStyles;
+    procedure CheckVersion;
   end;
 
 var
@@ -78,7 +81,8 @@ implementation
 
 uses
   System.Threading, System.UITypes, System.DateUtils,
-  TogglHelper.Controller, TogglHelper.FrameEntry, Vcl.Themes, Vcl.Styles;
+  TogglHelper.Controller, TogglHelper.FrameEntry, Vcl.Themes,
+  Vcl.Styles, Winapi.ShellAPI;
 
 {$R *.dfm}
 
@@ -87,6 +91,7 @@ begin
   pcMain.ActivePage := tsEntries;
   dpBase.Date := Date;
   LoadStyles;
+  CheckVersion;
 end;
 
 procedure TfrmMain.AddEntry;
@@ -142,7 +147,7 @@ end;
 
 procedure TfrmMain.btnEditClick(Sender: TObject);
 begin
-  MessageDlg('Feature under development!', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+  MessageDlg('Feature under development', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
 end;
 
 procedure TfrmMain.btnPushClick(Sender: TObject);
@@ -197,6 +202,22 @@ begin
   MessageDlg('Please restart app to apply changes!', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
 end;
 
+procedure TfrmMain.CheckVersion;
+begin
+  if SingletonToggl.IsLastVersion then
+    Exit;
+
+  var Noti := TNotification.Create;
+  try
+    Noti.Name := 'Update';
+    Noti.Title := 'TogglHelper';
+    Noti.AlertBody := 'There is a new release available on Github! Click here to download.';
+    NC.PresentNotification(Noti);
+  finally
+    Noti.Free;
+  end;
+end;
+
 procedure TfrmMain.Date1Click(Sender: TObject);
 begin
   SingletonToggl.ReorderEntries(sbEntries, TSortParam.Time);
@@ -233,6 +254,12 @@ begin
   end;
 
   cbStyle.ItemIndex := cbStyle.Items.IndexOf(TStyleManager.ActiveStyle.Name);
+end;
+
+procedure TfrmMain.NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
+begin
+  if ANotification.Name = 'Update' then
+    ShellExecute(Self.Handle, 'open', 'https://github.com/th3colosso/TogglHelper/releases', '', '', SW_SHOWNORMAL);
 end;
 
 procedure TfrmMain.Tag1Click(Sender: TObject);

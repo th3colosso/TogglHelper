@@ -316,4 +316,9 @@ object frmMain: TfrmMain
       OnClick = Tag1Click
     end
   end
+  object NC: TNotificationCenter
+    OnReceiveLocalNotification = NCReceiveLocalNotification
+    Left = 428
+    Top = 96
+  end
 end

@@ -26,6 +26,7 @@ type
     procedure LoadConfig;
     procedure SetClientHeaders;
     function GetAppFolder: string;
+    function CompareToFileVersion(AVersion: string): Boolean;
   public
     constructor Create;
     destructor Destroy; override;
@@ -36,6 +37,7 @@ type
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
     procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
     procedure ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
+    function IsLastVersion: Boolean;
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -55,7 +57,7 @@ uses
   System.JSON, System.DateUtils, Vcl.Dialogs,
   System.Generics.Collections, TogglHelper.EntryHelper,
   Vcl.Themes, System.IOUtils, System.Generics.Defaults,
-  System.Math;
+  System.Math, Winapi.Windows;
 
 { TToggleController }
 
@@ -150,6 +152,38 @@ begin
   FTags.List.Clear;
 end;
 
+function TToggleController.CompareToFileVersion(AVersion: string): Boolean;
+var
+  Size, Handle: DWORD;
+  Buffer: Pointer;
+  FileInfo: PVSFixedFileInfo;
+  Len: UINT;
+begin
+  Result := False;
+  Size := GetFileVersionInfoSize(PChar(Application.ExeName), Handle);
+  if Size = 0 then
+    Exit;
+
+  GetMem(Buffer, Size);
+  try
+    if GetFileVersionInfo(PChar(Application.ExeName), Handle, Size, Buffer) then
+    begin
+      if VerQueryValue(Buffer, '\', Pointer(FileInfo), Len) then
+      begin
+        var FormatedVersion := Format('v%d.%d.%d', [
+          HiWord(FileInfo.dwFileVersionMS), // Major
+          LoWord(FileInfo.dwFileVersionMS), // Minor
+          HiWord(FileInfo.dwFileVersionLS)  // Release
+        ]);
+
+        Result := CompareStr(FormatedVersion, AVersion) >= 0;
+      end;
+    end;
+  finally
+    FreeMem(Buffer);
+  end;
+end;
+
 constructor TToggleController.Create;
 begin
   FConfigFile := GetAppFolder + '\config.json';
@@ -188,6 +222,33 @@ begin
 
   if not TDirectory.Exists(Result) then
     TDirectory.CreateDirectory(Result);
+end;
+
+function TToggleController.IsLastVersion: Boolean;
+begin
+  try
+    var Client := THTTPClient.Create;
+    try
+      var Response := Client.Get('https://api.github.com/repos/th3colosso/TogglHelper/releases/latest');
+      if not Response.StatusCode = 200 then
+        Exit(True);
+
+      var Tag := EmptyStr;
+      var JObj := TJSONObject.ParseJSONValue(Response.ContentAsString);
+      try
+        if not JObj.TryGetValue<string>('tag_name', Tag) then
+          Exit(True);
+      finally
+        JObj.Free;
+      end;
+
+      Result := CompareToFileVersion(Tag);
+    finally
+      Client.Free;
+    end;
+  except
+    Result := True;
+  end;
 end;
 
 procedure TToggleController.LoadConfig;
