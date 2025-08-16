@@ -44,12 +44,12 @@ object frmMain: TfrmMain
         TabOrder = 0
         OnClick = btnAuthClick
       end
-      object gbResult: TGroupBox
+      object gbTogglInfo: TGroupBox
         Left = 36
         Top = 64
         Width = 333
         Height = 333
-        Caption = 'Result'
+        Caption = 'Toggl Auth Info'
         TabOrder = 1
         object lblFullName: TLabel
           Left = 24
@@ -209,18 +209,18 @@ object frmMain: TfrmMain
           OnChange = cbProjectsChange
         end
         object btnAdd: TButton
-          Left = 571
-          Top = 11
-          Width = 94
+          Left = 522
+          Top = 12
+          Width = 80
           Height = 25
           Caption = 'Add Entry'
           TabOrder = 1
           OnClick = btnAddClick
         end
         object btnPush: TButton
-          Left = 571
+          Left = 624
           Top = 42
-          Width = 198
+          Width = 145
           Height = 25
           Caption = 'Push All Time Entries'
           TabOrder = 2
@@ -242,18 +242,27 @@ object frmMain: TfrmMain
           TabOrder = 3
         end
         object actIndicator: TActivityIndicator
-          Left = 541
+          Left = 594
           Top = 42
           IndicatorSize = aisSmall
         end
         object btnSort: TButton
-          Left = 671
+          Left = 689
           Top = 11
-          Width = 94
+          Width = 80
           Height = 25
           Caption = 'Sort Entries'
           TabOrder = 5
           OnMouseDown = btnSortMouseDown
+        end
+        object btnBulkEdit: TButton
+          Left = 608
+          Top = 11
+          Width = 75
+          Height = 25
+          Caption = 'Bulk Edit'
+          TabOrder = 6
+          OnMouseDown = btnBulkEditMouseDown
         end
       end
       object sbEntries: TScrollBox

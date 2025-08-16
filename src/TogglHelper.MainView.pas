@@ -17,7 +17,7 @@ type
     tsSettings: TTabSheet;
     lblToken: TLabel;
     btnAuth: TButton;
-    gbResult: TGroupBox;
+    gbTogglInfo: TGroupBox;
     edtFullName: TEdit;
     lblFullName: TLabel;
     lblEmail: TLabel;
@@ -48,6 +48,7 @@ type
     Description1: TMenuItem;
     Tag1: TMenuItem;
     NC: TNotificationCenter;
+    btnBulkEdit: TButton;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -61,6 +62,7 @@ type
     procedure Tag1Click(Sender: TObject);
     procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
     procedure btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure btnBulkEditMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -78,7 +80,7 @@ implementation
 uses
   System.Threading, System.UITypes, System.DateUtils,
   TogglHelper.Controller, TogglHelper.FrameEntry, Vcl.Themes,
-  Vcl.Styles, Winapi.ShellAPI;
+  Vcl.Styles, Winapi.ShellAPI, System.RegularExpressions;
 
 {$R *.dfm}
 
@@ -139,6 +141,42 @@ begin
   Authenticate;
 end;
 
+procedure TfrmMain.btnBulkEditMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+var
+  Request, Response: array [0..1] of string;
+  Title: string;
+  IsWholeLine: Boolean;
+begin
+  Request[0] := 'Text to find:';
+  Request[1] := 'Replace with:';
+
+  IsWholeLine := ssCtrl in Shift;
+
+  Title := 'Bulk Edit';
+  if IsWholeLine then
+    Title := 'Bulk Edit [line_replace]';
+
+  if not InputQuery(Title, Request, Response) then
+  begin
+    pnlDefault.SetFocus;
+    Exit;
+  end;
+
+  for var i := 0 to Pred(sbEntries.ComponentCount) do
+  begin
+    var Entry := sbentries.Components[i] as TFrameEntry;
+    if IsWholeLine then
+    begin
+      if TRegEx.IsMatch(Entry.edtEntry.Text, '\b' + Response[0] + '\b', [roIgnoreCase]) then
+        Entry.edtEntry.Text := Response[1];
+    end
+    else
+      Entry.edtEntry.Text := TRegEx.Replace(Entry.edtEntry.Text, '\b' + Response[0] + '\b', Response[1], [roIgnoreCase]);
+  end;
+
+  pnlDefault.SetFocus;
+end;
+
 procedure TfrmMain.btnPushClick(Sender: TObject);
 begin
   TButton(Sender).Enabled := False;
@@ -155,7 +193,7 @@ begin
       SingletonToggl.PushAllEntries(sbEntries, dpBase.Date);
     finally
       btn.Caption := 'Done';
-      Sleep(1000);
+      Sleep(2000);
       btn.Caption := CaptionOld;
       btn.Enabled := True;
       TThread.Synchronize(nil,
@@ -170,6 +208,7 @@ end;
 procedure TfrmMain.btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   popSort.Popup(Mouse.CursorPos.X, Mouse.CursorPos.Y);
+  pnlDefault.SetFocus;
 end;
 
 procedure TfrmMain.btnUpdateClick(Sender: TObject);
@@ -248,7 +287,7 @@ end;
 procedure TfrmMain.NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
 begin
   if ANotification.Name = 'Update' then
-    ShellExecute(Self.Handle, 'open', 'https://github.com/th3colosso/TogglHelper/releases', '', '', SW_SHOWNORMAL);
+    ShellExecute(Self.Handle, 'open', 'https://github.com/th3colosso/TogglHelper/releases/latest', '', '', SW_SHOWNORMAL);
 end;
 
 procedure TfrmMain.Tag1Click(Sender: TObject);
@@ -285,6 +324,7 @@ begin
       begin
         pnlStatus.Caption := 'Update complete';
         pnlStatus.Color := clGreen;
+        Self.Caption := Self.Caption + ' [ready]';
       end
     else
       begin
@@ -315,8 +355,6 @@ begin
       SingletonToggl.RealoadLastEntries(sbEntries);
 
       UpdateStatus(TStatus.Complete);
-
-      Self.Caption := Self.Caption + ' [ready]';
     except
       on E: Exception do
       begin
