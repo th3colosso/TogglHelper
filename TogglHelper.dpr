@@ -10,7 +10,8 @@ uses
   TogglHelper.FrameEntry in 'src\TogglHelper.FrameEntry.pas' {FrameEntry: TFrame},
   TogglHelper.EntryHelper in 'src\TogglHelper.EntryHelper.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  TogglHelper.DataVisualizer in 'src\TogglHelper.DataVisualizer.pas' {frmVisualizer};
 
 {$R *.res}
 

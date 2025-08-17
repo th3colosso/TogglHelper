@@ -132,6 +132,10 @@
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="src\TogglHelper.EntryHelper.pas"/>
+        <DCCReference Include="src\TogglHelper.DataVisualizer.pas">
+            <Form>frmVisualizer</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -158,7 +162,7 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile LocalName="Win32\Debug\TogglHelper.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\TogglHelper.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>TogglHelper.exe</RemoteName>
                         <Overwrite>true</Overwrite>

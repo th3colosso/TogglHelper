@@ -58,13 +58,19 @@ begin
       var JId := 0;
       if IsActive and JObj.TryGetValue<string>('name', JName) and JObj.TryGetValue<Integer>('id', JId) then
         List.Add(JName, JId);
+    end;
 
-      FResponse.Clear;
-      FResponse.Add('');
-      FResponse.Add('== GET TAGS ==');
-      FResponse.Add('> HTTP status code: ' + AResponse.StatusCode.ToString);
-      FResponse.Add('> JSON: ');
-      FResponse.Add(JArray.Format(4));
+    var SBuilder := TStringBuilder.Create;
+    try
+      SBuilder
+        .AppendLine('== GET TAGS ==')
+        .AppendLine('> HTTP status code: ' + AResponse.StatusCode.ToString)
+        .AppendLine('> JSON:')
+        .AppendLine(JArray.Format(4));
+
+      FResponse.Text := SBuilder.ToString;
+    finally
+      Sbuilder.Free;
     end;
   finally
     JArray.Free;

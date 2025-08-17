@@ -58,12 +58,18 @@ begin
     Json.TryGetValue<Integer>('default_workspace_id', FWorkspaceID);
     Json.TryGetValue<Integer>('id', FID);
 
-    FResponse.Clear;
-    FResponse.Add('');
-    FResponse.Add('== USER AUTH ==');
-    FResponse.Add('> HTTP status code: ' + AResponse.StatusCode.ToString);
-    FResponse.Add('> JSON: ');
-    FResponse.Add(Json.Format(4));
+    var SBuilder := TStringBuilder.Create;
+    try
+      SBuilder
+        .AppendLine('== == USER AUTH == ==')
+        .AppendLine('> HTTP status code: ' + AResponse.StatusCode.ToString)
+        .AppendLine('> JSON:')
+        .AppendLine(Json.Format(4));
+
+      FResponse.Text := SBuilder.ToString;
+    finally
+      Sbuilder.Free;
+    end;
   finally
     Json.Free;
   end;

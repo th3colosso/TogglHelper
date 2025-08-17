@@ -27,6 +27,7 @@ type
     procedure SetClientHeaders;
     function GetAppFolder: string;
     function CompareToFileVersion(AVersion: string): Boolean;
+    procedure OnResponseChange(Sender: TObject);
   public
     constructor Create;
     destructor Destroy; override;
@@ -57,7 +58,7 @@ uses
   System.JSON, System.DateUtils, Vcl.Dialogs,
   System.Generics.Collections, TogglHelper.EntryHelper,
   Vcl.Themes, System.IOUtils, System.Generics.Defaults,
-  System.Math, Winapi.Windows;
+  System.Math, Winapi.Windows, TogglHelper.DataVisualizer;
 
 { TToggleController }
 
@@ -189,8 +190,9 @@ begin
   FConfigFile := GetAppFolder + '\config.json';
   FEntriesFile := GetAppFolder + '\entries.json';
   FJSonBody := GetAppFolder + '\body.json';
-  FResponse := TStringList.Create;
   FClient := THTTPClient.Create;
+  FResponse := TStringList.Create;
+  FResponse.OnChange := OnResponseChange;
 
   FUser := TTogglUser.Create(FClient, FResponse);
   FProjects := TTogglProjects.Create(FClient, FResponse);
@@ -299,6 +301,20 @@ begin
   Entry.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
 
+procedure TToggleController.OnResponseChange(Sender: TObject);
+begin
+  if not GetKeyState(VK_CONTROL) < 0 then
+    Exit;
+
+  var DataView := TfrmVisualizer.Create(nil);
+  try
+    DataView.mmData.Lines := FResponse;
+    DataView.ShowModal;
+  finally
+    DataView.Free;
+  end;
+end;
+
 procedure TToggleController.PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
 begin
   FBaseDate := ADate;
@@ -327,7 +343,25 @@ begin
       if not Entry.cbPush.checked then
         continue;
 
-      FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', FJSonBody);
+      var HttpResponse := FClient.post('https://api.track.toggl.com/api/v9/workspaces/'+FUser.WorkspaceID.ToString+'/time_entries', FJSonBody);
+      var SBuilder := TStringBuilder.Create;
+      try
+        SBuilder
+          .AppendLine('== PUSH ENTRY ==')
+          .AppendLine('> HTTP status code: ' + HttpResponse.StatusCode.ToString)
+          .AppendLine('> JSON:');
+
+          var JObjResponse := TJSONObject.ParseJSONValue(HttpResponse.ContentAsString);
+          try
+            SBuilder.AppendLine(JobjResponse.Format(4));
+          finally
+            JObjResponse.Free;
+          end;
+
+        FResponse.Text := SBuilder.ToString;
+      finally
+        Sbuilder.Free;
+      end;
     end;
 
     JString.Clear;

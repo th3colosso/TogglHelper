@@ -9,7 +9,6 @@ type
   TTogglProjects = class
   private
     FList: TDictionary<string, Integer>;
-    FApiToken: string;
     FClient: THTTPClient;
     FResponse: TStringList;
     procedure RetrieveResponseValues(AResponse: IHTTPResponse);
@@ -17,7 +16,6 @@ type
     constructor Create(AClient: THTTPClient; AResponse: TStringList);
     destructor Destroy; override;
     property List: TDictionary<string, Integer> read FList write FList;
-    property ApiToken: string read FApiToken write FApiToken;
     procedure UpdateList;
   end;
 
@@ -52,20 +50,27 @@ begin
       var IsActive := False;
       var JValue := '';
       if JObj.TryGetValue<string>('status', JValue) then
-        IsActive := JValue = 'active';
+        IsActive := JValue.Equals('active');
 
       var JName := '';
       var JId := 0;
       if IsActive and JObj.TryGetValue<string>('name', JName) and JObj.TryGetValue<Integer>('id', JId) then
         List.Add(JName, JId);
-
-      FResponse.Clear;
-      FResponse.Add('');
-      FResponse.Add('== GET PROJECTS ==');
-      FResponse.Add('> HTTP status code: ' + AResponse.StatusCode.ToString);
-      FResponse.Add('> JSON: ');
-      FResponse.Add(JArray.Format(4));
     end;
+
+    var SBuilder := TStringBuilder.Create;
+    try
+      SBuilder
+        .AppendLine('== GET PROJECTS ==')
+        .AppendLine('> HTTP status code: ' + AResponse.StatusCode.ToString)
+        .AppendLine('> JSON:')
+        .AppendLine(JArray.Format(4));
+
+      FResponse.Text := SBuilder.ToString;
+    finally
+      Sbuilder.Free;
+    end;
+
   finally
     JArray.Free;
   end;
