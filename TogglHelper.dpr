@@ -2,16 +2,16 @@
 
 uses
   Vcl.Forms,
-  TogglHelper.MainView in 'src\TogglHelper.MainView.pas' {frmMain},
-  TogglHelper.User in 'src\TogglHelper.User.pas',
-  TogglHelper.Controller in 'src\TogglHelper.Controller.pas',
-  TogglHelper.Projects in 'src\TogglHelper.Projects.pas',
-  TogglHelper.Tags in 'src\TogglHelper.Tags.pas',
-  TogglHelper.FrameEntry in 'src\TogglHelper.FrameEntry.pas' {FrameEntry: TFrame},
-  TogglHelper.EntryHelper in 'src\TogglHelper.EntryHelper.pas',
+  TogglHelper.MainView in 'src\view\TogglHelper.MainView.pas' {frmMain},
+  TogglHelper.User in 'src\repository\TogglHelper.User.pas',
+  TogglHelper.Controller in 'src\controller\TogglHelper.Controller.pas',
+  TogglHelper.Projects in 'src\repository\TogglHelper.Projects.pas',
+  TogglHelper.Tags in 'src\repository\TogglHelper.Tags.pas',
+  TogglHelper.FrameEntry in 'src\view\TogglHelper.FrameEntry.pas' {FrameEntry: TFrame},
+  TogglHelper.EntryHelper in 'src\utils\TogglHelper.EntryHelper.pas',
   Vcl.Themes,
   Vcl.Styles,
-  TogglHelper.DataVisualizer in 'src\TogglHelper.DataVisualizer.pas' {frmVisualizer};
+  TogglHelper.DataVisualizer in 'src\view\TogglHelper.DataVisualizer.pas' {frmVisualizer};
 
 {$R *.res}
 

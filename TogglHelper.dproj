@@ -120,19 +120,19 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="src\TogglHelper.MainView.pas">
+        <DCCReference Include="src\view\TogglHelper.MainView.pas">
             <Form>frmMain</Form>
         </DCCReference>
-        <DCCReference Include="src\TogglHelper.User.pas"/>
-        <DCCReference Include="src\TogglHelper.Controller.pas"/>
-        <DCCReference Include="src\TogglHelper.Projects.pas"/>
-        <DCCReference Include="src\TogglHelper.Tags.pas"/>
-        <DCCReference Include="src\TogglHelper.FrameEntry.pas">
+        <DCCReference Include="src\repository\TogglHelper.User.pas"/>
+        <DCCReference Include="src\controller\TogglHelper.Controller.pas"/>
+        <DCCReference Include="src\repository\TogglHelper.Projects.pas"/>
+        <DCCReference Include="src\repository\TogglHelper.Tags.pas"/>
+        <DCCReference Include="src\view\TogglHelper.FrameEntry.pas">
             <Form>FrameEntry</Form>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
-        <DCCReference Include="src\TogglHelper.EntryHelper.pas"/>
-        <DCCReference Include="src\TogglHelper.DataVisualizer.pas">
+        <DCCReference Include="src\utils\TogglHelper.EntryHelper.pas"/>
+        <DCCReference Include="src\view\TogglHelper.DataVisualizer.pas">
             <Form>frmVisualizer</Form>
             <FormType>dfm</FormType>
         </DCCReference>
