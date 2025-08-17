@@ -11,7 +11,8 @@ uses
   TogglHelper.EntryHelper in 'src\utils\TogglHelper.EntryHelper.pas',
   Vcl.Themes,
   Vcl.Styles,
-  TogglHelper.DataVisualizer in 'src\view\TogglHelper.DataVisualizer.pas' {frmVisualizer};
+  TogglHelper.DataVisualizer in 'src\view\TogglHelper.DataVisualizer.pas' {frmVisualizer},
+  TogglHelper.VersionControl in 'src\repository\TogglHelper.VersionControl.pas';
 
 {$R *.res}
 

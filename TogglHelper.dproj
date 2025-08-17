@@ -136,6 +136,7 @@
             <Form>frmVisualizer</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="src\repository\TogglHelper.VersionControl.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
