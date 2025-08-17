@@ -284,26 +284,14 @@ end;
 
 procedure TToggleController.NewEntry(AContainer: TScrollBox; ADefProjectIndex: Integer);
 begin
-  var Entry := TframeEntry.Create(AContainer);
+  var Entry := TFrameEntry.Create(AContainer);
+  Entry.Init(ADefProjectIndex);
   AContainer.VertScrollBar.Range := AContainer.VertScrollBar.Range + Entry.Height;
-  Entry.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
-  Entry.Tag := AContainer.ComponentCount;
-  Entry.Top := Entry.Height * Entry.Tag;
-  Entry.Parent := AContainer;
-  Entry.Align := altop;
-  SingletonToggl.FillComboBox(Entry.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
-  Entry.cbPrj.ItemIndex := ADefProjectIndex;
-  SingletonToggl.FillComboBox(Entry.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
-  Entry.cbTag.ItemIndex := 0;
-  Entry.tpStart.Time := IncHour(Time, -1);
-  Entry.tpStop.Time := Time;
-  Entry.edtEntry.Text := 'CGMSPR-123456 ';
-  Entry.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
 
 procedure TToggleController.OnResponseChange(Sender: TObject);
 begin
-  if not GetKeyState(VK_CONTROL) < 0 then
+  if not (GetKeyState(VK_CONTROL) < 0) then
     Exit;
 
   var DataView := TfrmVisualizer.Create(nil);

@@ -10,6 +10,7 @@ type
   TEntryHelper = class Helper for TFrameEntry
     procedure MapToJSON(AJSON: TJSONObject);
     procedure MapFromJson(AJSON: TJSONObject);
+    procedure Init(ADefProjectIndex: Integer);
   end;
 
 implementation
@@ -17,9 +18,28 @@ implementation
 uses
   TogglHelper.Controller,
   System.DateUtils,
-  System.SysUtils;
+  System.SysUtils,
+  Vcl.Controls;
 
 { TEntryHelper }
+
+procedure TEntryHelper.Init(ADefProjectIndex: Integer);
+begin
+  Self.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
+  Self.Tag := Self.Owner.ComponentCount;
+  Self.Top := Self.Height * Self.Tag;
+  if Self.Owner is TWinControl then
+    Self.Parent := (Self.Owner as TWinControl);
+  Self.Align := altop;
+  SingletonToggl.FillComboBox(Self.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
+  Self.cbPrj.ItemIndex := ADefProjectIndex;
+  SingletonToggl.FillComboBox(Self.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
+  Self.cbTag.ItemIndex := 0;
+  Self.tpStart.Time := IncHour(Time, -1);
+  Self.tpStop.Time := Time;
+  Self.edtEntry.Text := 'CGMSPR-123456 ';
+  Self.OnTagReorder := SingletonToggl.ReorderEntries;
+end;
 
 procedure TEntryHelper.MapFromJson(AJSON: TJSONObject);
 begin
