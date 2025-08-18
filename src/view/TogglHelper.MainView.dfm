@@ -260,7 +260,10 @@ object frmMain: TfrmMain
           Top = 11
           Width = 75
           Height = 25
+          Hint = 'Ctrl + Click to enable [line_replace]'
           Caption = 'Bulk Edit'
+          ParentShowHint = False
+          ShowHint = True
           TabOrder = 6
           OnMouseDown = btnBulkEditMouseDown
         end
