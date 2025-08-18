@@ -233,13 +233,17 @@ begin
   if not (GetKeyState(VK_CONTROL) < 0) then
     Exit;
 
-  var DataView := TfrmVisualizer.Create(nil);
-  try
-    DataView.mmData.Lines := FResponse;
-    DataView.ShowModal;
-  finally
-    DataView.Free;
-  end;
+  TThread.Synchronize(nil,
+  procedure
+  begin
+    var DataView := TfrmVisualizer.Create(nil);
+    try
+      DataView.mmData.Lines := FResponse;
+      DataView.ShowModal;
+    finally
+      DataView.Free;
+    end;
+  end);
 end;
 
 procedure TToggleController.PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
