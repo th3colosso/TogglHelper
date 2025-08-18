@@ -80,7 +80,8 @@ implementation
 uses
   System.Threading, System.UITypes, System.DateUtils,
   TogglHelper.Controller, TogglHelper.FrameEntry, Vcl.Themes,
-  Vcl.Styles, Winapi.ShellAPI, System.RegularExpressions;
+  Vcl.Styles, Winapi.ShellAPI, System.RegularExpressions,
+  TogglHelper.VersionControl;
 
 {$R *.dfm}
 
@@ -232,7 +233,7 @@ end;
 
 procedure TfrmMain.CheckVersion;
 begin
-  if SingletonToggl.IsLastVersion then
+  if TVersionControl.IsLastVersion then
     Exit;
 
   var Noti := TNotification.Create;
@@ -287,7 +288,7 @@ end;
 procedure TfrmMain.NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
 begin
   if ANotification.Name = 'Update' then
-    ShellExecute(Self.Handle, 'open', 'https://github.com/th3colosso/TogglHelper/releases/latest', '', '', SW_SHOWNORMAL);
+    ShellExecute(Self.Handle, 'open', LatestReleaseURL, '', '', SW_SHOWNORMAL);
 end;
 
 procedure TfrmMain.Tag1Click(Sender: TObject);
