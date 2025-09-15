@@ -287,7 +287,7 @@ object frmMain: TfrmMain
   object popSort: TPopupMenu
     AutoHotkeys = maManual
     TrackButton = tbLeftButton
-    Left = 440
+    Left = 432
     Top = 36
     object Description1: TMenuItem
       Caption = 'Description'

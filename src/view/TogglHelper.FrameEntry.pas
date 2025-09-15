@@ -46,8 +46,12 @@ procedure TFrameEntry.imgCloseClick(Sender: TObject);
 var
   Img: TImage absolute Sender;
 begin
-  var ScrollBox := (Img.Owner.Owner as TScrollBox);
-  ScrollBox.VertScrollBar.Range := ScrollBox.VertScrollBar.Range - Self.Height;
+  if Img.Owner.Owner is TScrollBox then
+  begin
+    var ScrollBox := (Img.Owner.Owner as TScrollBox);
+    ScrollBox.VertScrollBar.Range := ScrollBox.VertScrollBar.Range - Self.Height;
+  end;
+
   Img.Owner.Free;
 end;
 
