@@ -92,6 +92,8 @@ begin
 
   var Start: TDateTime := Self.tpStart.Time + SingletonToggl.BaseDate;
   var Stop: TDateTime := Self.tpStop.Time + SingletonToggl.BaseDate;
+  Start := RecodeSecond(Start, 0);
+  Stop := RecodeSecond(Stop, 0);
   var Duration := SecondsBetween(Start, Stop);
   AJSON.AddPair('duration', Duration);
   AJSON.AddPair('start', FormatDateTime('YYYY"-"MM"-"DD"T"HH":"NN":"SS"."000"-03:00"', Start));
