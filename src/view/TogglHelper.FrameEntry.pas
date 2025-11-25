@@ -29,9 +29,15 @@ type
     tpStart: TDateTimePicker;
     tpStop: TDateTimePicker;
     cbPush: TCheckBox;
+    lblHourCount: TLabel;
+    lblHours: TLabel;
     procedure imgCloseClick(Sender: TObject);
     procedure pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
+    procedure tpStartChange(Sender: TObject);
+    procedure ZeroSeconds;
+    procedure UpdateElapsedTime;
+    procedure tpStopChange(Sender: TObject);
   private
     FOnTagReorder: TProcReorder;
   public
@@ -39,6 +45,9 @@ type
   end;
 
 implementation
+
+uses
+  System.DateUtils, System.TimeSpan;
 
 {$R *.dfm}
 
@@ -95,6 +104,29 @@ begin
     Exit;
 
   Accept := True;
+end;
+
+procedure TFrameEntry.tpStartChange(Sender: TObject);
+begin
+  UpdateElapsedTime;
+end;
+
+procedure TFrameEntry.tpStopChange(Sender: TObject);
+begin
+  UpdateElapsedTime;
+end;
+
+procedure TFrameEntry.UpdateElapsedTime;
+begin
+  ZeroSeconds;
+  var Span := TTimeSpan.FromSeconds(tpStart.DateTime.SecondSpan(tpStop.DateTime));
+  lblHours.Caption := Format('%.2dh%.2dm', [Span.Hours + (Span.Days * 24), Span.Minutes]);
+end;
+
+procedure TFrameEntry.ZeroSeconds;
+begin
+  RecodeSecond(tpStart.DateTime, 0);
+  RecodeSecond(tpStop.DateTime, 0);
 end;
 
 end.

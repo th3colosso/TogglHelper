@@ -37,6 +37,7 @@ begin
   Self.cbTag.ItemIndex := 0;
   Self.tpStart.Time := IncHour(Time, -1);
   Self.tpStop.Time := Time;
+  Self.UpdateElapsedTime;
   Self.edtEntry.Text := 'CGMFRAVII-12345 ';
   Self.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
@@ -72,6 +73,8 @@ begin
     Self.tpStop.Time := EntryTime
   else
     Self.tpStop.Time := IncHour(Time, -1);
+
+  Self.UpdateElapsedTime;
 end;
 
 procedure TEntryHelper.MapToJSON(AJSON: TJSONObject);

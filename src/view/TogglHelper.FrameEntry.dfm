@@ -96,6 +96,28 @@ object FrameEntry: TFrameEntry
       OnClick = imgCloseClick
       ExplicitLeft = 714
     end
+    object lblHourCount: TLabel
+      Left = 483
+      Top = 16
+      Width = 79
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = 'Hours Worked:'
+    end
+    object lblHours: TLabel
+      Left = 568
+      Top = 16
+      Width = 6
+      Height = 15
+      Anchors = [akTop, akRight]
+      Caption = '0'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+    end
     object edtEntry: TEdit
       Left = 24
       Top = 37
@@ -115,7 +137,7 @@ object FrameEntry: TFrameEntry
       TabOrder = 1
     end
     object cbBillable: TCheckBox
-      Left = 517
+      Left = 411
       Top = 16
       Width = 66
       Height = 17
@@ -148,6 +170,7 @@ object FrameEntry: TFrameEntry
       Kind = dtkTime
       ParseInput = True
       TabOrder = 4
+      OnChange = tpStartChange
     end
     object tpStop: TDateTimePicker
       Left = 627
@@ -162,12 +185,14 @@ object FrameEntry: TFrameEntry
       Kind = dtkTime
       ParseInput = True
       TabOrder = 5
+      OnChange = tpStopChange
     end
     object cbPush: TCheckBox
-      Left = 410
+      Left = 304
       Top = 16
       Width = 97
       Height = 17
+      Anchors = [akTop, akRight]
       Caption = 'Push to Toggl'
       Checked = True
       State = cbChecked
