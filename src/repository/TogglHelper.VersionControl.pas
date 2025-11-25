@@ -8,10 +8,9 @@ type
     class function CompareToAppVersion(const AVersion: string): Boolean;
   public
     class function IsLastVersion: Boolean;
+    class var DownloadUrl: string;
   end;
 
-const
-  LatestReleaseURL = 'https://api.github.com/repos/th3colosso/TogglHelper/releases/latest';
 
 implementation
 
@@ -21,7 +20,11 @@ uses
   System.Net.URLClient,
   System.JSON,
   Vcl.Forms,
-  Winapi.Windows;
+  Winapi.Windows,
+  System.Generics.Collections;
+
+const
+  LatestReleaseURL = 'https://api.github.com/repos/th3colosso/TogglHelper/releases/latest';
 
 { TVersionControl }
 
@@ -71,6 +74,13 @@ begin
       try
         if not JObj.TryGetValue<string>('tag_name', Tag) then
           Exit(True);
+
+        if Assigned(JObj.FindValue('assets')) then
+        begin
+          var LJArray := (JObj.FindValue('assets') as TJSONArray);
+          if not LJArray[0].TryGetValue<string>('browser_download_url', DownloadUrl) then
+            JObj.TryGetValue<string>('html_url', DownloadUrl);
+        end;
       finally
         JObj.Free;
       end;

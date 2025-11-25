@@ -247,7 +247,7 @@ begin
   try
     Noti.Name := 'Update';
     Noti.Title := 'TogglHelper';
-    Noti.AlertBody := 'There is a new release available on Github! Click here open the download page.';
+    Noti.AlertBody := 'There is a new release available on Github! Click here to download.';
     NC.PresentNotification(Noti);
   finally
     Noti.Free;
@@ -295,7 +295,7 @@ end;
 procedure TfrmMain.NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
 begin
   if ANotification.Name = 'Update' then
-    ShellExecute(Self.Handle, 'open', LatestReleaseURL, '', '', SW_SHOWNORMAL);
+    ShellExecute(Self.Handle, 'open', PChar(TVersionControl.DownloadUrl), '', '', SW_SHOWNORMAL);
 end;
 
 procedure TfrmMain.Tag1Click(Sender: TObject);
