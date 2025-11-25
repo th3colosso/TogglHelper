@@ -5,7 +5,7 @@ interface
 uses
   System.Net.HttpClient, System.Net.URLClient, System.NetEncoding,
   TogglHelper.User, TogglHelper.Projects, TogglHelper.Tags, System.Classes,
-  Vcl.StdCtrls, Vcl.Controls, Vcl.Forms, TogglHelper.FrameEntry;
+  Vcl.StdCtrls, Vcl.Controls, Vcl.Forms, TogglHelper.FrameEntry, System.TimeSpan;
 
 type
   TToggleController = class
@@ -37,6 +37,7 @@ type
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
     procedure UpdateAllCbProj(AItemIndex: Integer; AContainer: TScrollBox);
     procedure ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
+    function GetTotalTimeSpan(AContainer: TScrollBox): TTimeSpan;
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -190,6 +191,21 @@ begin
 
   if not TDirectory.Exists(Result) then
     TDirectory.CreateDirectory(Result);
+end;
+
+function TToggleController.GetTotalTimeSpan(AContainer: TScrollBox): TTimeSpan;
+begin
+  Result := TTimeSpan.Create(0);
+  for var i := 0 to Pred(AContainer.ComponentCount) do
+  begin
+    if not (AContainer.Components[i] is TFrameEntry) then
+      continue;
+
+    var LEntry := (AContainer.Components[i] as TFrameEntry);
+
+    LEntry.UpdateElapsedTime;
+    Result := Result.Add(LEntry.ElapsedTime);
+  end;
 end;
 
 procedure TToggleController.LoadConfig;

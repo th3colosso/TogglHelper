@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.WinXPickers,
-  Vcl.ComCtrls, Vcl.Imaging.pngimage;
+  Vcl.ComCtrls, Vcl.Imaging.pngimage, System.TimeSpan;
 
 type
 {$SCOPEDENUMS ON}
@@ -40,14 +40,16 @@ type
     procedure tpStopChange(Sender: TObject);
   private
     FOnTagReorder: TProcReorder;
+    FElapsedTime: TTimeSpan;
   public
     property OnTagReorder: TProcReorder read FOnTagReorder write FOnTagReorder;
+    property ElapsedTime: TTimeSpan read FElapsedTime write FElapsedTime;
   end;
 
 implementation
 
 uses
-  System.DateUtils, System.TimeSpan;
+  System.DateUtils;
 
 {$R *.dfm}
 
@@ -119,8 +121,8 @@ end;
 procedure TFrameEntry.UpdateElapsedTime;
 begin
   ZeroSeconds;
-  var Span := TTimeSpan.FromSeconds(tpStart.DateTime.SecondSpan(tpStop.DateTime));
-  lblHours.Caption := Format('%.2dh%.2dm', [Span.Hours + (Span.Days * 24), Span.Minutes]);
+  ElapsedTime := TTimeSpan.FromSeconds(tpStart.DateTime.SecondSpan(tpStop.DateTime));
+  lblHours.Caption := Format('%.2dh%.2dm', [ElapsedTime.Hours + (ElapsedTime.Days * 24), ElapsedTime.Minutes]);
 end;
 
 procedure TFrameEntry.ZeroSeconds;

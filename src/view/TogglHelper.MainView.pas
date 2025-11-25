@@ -180,6 +180,13 @@ end;
 
 procedure TfrmMain.btnPushClick(Sender: TObject);
 begin
+  var LSpan := SingletonToggl.GetTotalTimeSpan(sbEntries);
+  var LMsg := Format('Pushing to toggle [%d] entries with a total workload of %.2dh%.2dm.',
+    [sbEntries.ComponentCount, LSpan.Hours + (LSpan.Days * 24), LSpan.Minutes]);
+
+  if not (MessageDlg(LMsg, TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbCancel], 0) = mrOk) then
+    Exit;
+
   TButton(Sender).Enabled := False;
   actIndIcator.Animate := True;
   var btn := TButton(Sender);
