@@ -219,7 +219,7 @@ end;
 
 procedure TfrmMain.cbProjectsChange(Sender: TObject);
 begin
-  SingletonToggl.UpdateAllCombo((Sender as TComboBox).ItemIndex, sbEntries);
+  SingletonToggl.UpdateAllCbProj((Sender as TComboBox).ItemIndex, sbEntries);
 end;
 
 procedure TfrmMain.cbStyleChange(Sender: TObject);
@@ -240,7 +240,7 @@ begin
   try
     Noti.Name := 'Update';
     Noti.Title := 'TogglHelper';
-    Noti.AlertBody := 'There is a new release available on Github! Click here to download.';
+    Noti.AlertBody := 'There is a new release available on Github! Click here open the download page.';
     NC.PresentNotification(Noti);
   finally
     Noti.Free;

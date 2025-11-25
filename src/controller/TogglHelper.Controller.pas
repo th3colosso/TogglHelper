@@ -35,7 +35,7 @@ type
     procedure RealoadLastEntries(AContainer: TScrollBox);
     procedure PushAllEntries(AContainer: TScrollBox; ADate: TDateTime);
     procedure FillComboBox(AComboItems: TStrings; AItemArray: TArray<string>);
-    procedure UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
+    procedure UpdateAllCbProj(AItemIndex: Integer; AContainer: TScrollBox);
     procedure ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
@@ -334,7 +334,7 @@ begin
   FClient.ContentType := 'application/json; charset=utf-8';
 end;
 
-procedure TToggleController.UpdateAllCombo(AItemIndex: Integer; AContainer: TScrollBox);
+procedure TToggleController.UpdateAllCbProj(AItemIndex: Integer; AContainer: TScrollBox);
 begin
   for var i := 0 to Pred(AContainer.ComponentCount) do
   begin

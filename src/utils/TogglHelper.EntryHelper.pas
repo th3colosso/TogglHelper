@@ -37,7 +37,7 @@ begin
   Self.cbTag.ItemIndex := 0;
   Self.tpStart.Time := IncHour(Time, -1);
   Self.tpStop.Time := Time;
-  Self.edtEntry.Text := 'CGMSPR-123456 ';
+  Self.edtEntry.Text := 'CGMFRAVII-12345 ';
   Self.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
 
