@@ -203,6 +203,9 @@ begin
 
     var LEntry := (AContainer.Components[i] as TFrameEntry);
 
+    if not LEntry.cbPush.Checked then
+      continue;
+
     LEntry.UpdateElapsedTime;
     Result := Result.Add(LEntry.ElapsedTime);
   end;
@@ -294,16 +297,16 @@ begin
       var SBuilder := TStringBuilder.Create;
       try
         SBuilder
-          .AppendLine('== PUSH ENTRY ==')
+          .AppendLine('== POST ENTRY ==')
           .AppendLine('> HTTP status code: ' + HttpResponse.StatusCode.ToString)
           .AppendLine('> JSON:');
 
-          var JObjResponse := TJSONObject.ParseJSONValue(HttpResponse.ContentAsString);
-          try
-            SBuilder.AppendLine(JobjResponse.Format(4));
-          finally
-            JObjResponse.Free;
-          end;
+        var JObjResponse := TJSONObject.ParseJSONValue(HttpResponse.ContentAsString);
+        try
+          SBuilder.AppendLine(JobjResponse.Format(4));
+        finally
+          JObjResponse.Free;
+        end;
 
         FResponse.Text := SBuilder.ToString;
       finally
