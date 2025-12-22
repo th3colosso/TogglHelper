@@ -38,6 +38,7 @@ type
     procedure UpdateAllCbProj(AItemIndex: Integer; AContainer: TScrollBox);
     procedure ReorderEntries(AContainer: TScrollBox; ASortParam: TSortParam = TSortParam.Default);
     function GetTotalTimeSpan(AContainer: TScrollBox): TTimeSpan;
+    function GetValidEntries(AContainer: TScrollBox): Integer;
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
@@ -208,6 +209,23 @@ begin
 
     LEntry.UpdateElapsedTime;
     Result := Result.Add(LEntry.ElapsedTime);
+  end;
+end;
+
+function TToggleController.GetValidEntries(AContainer: TScrollBox): Integer;
+begin
+  Result := 0;
+  for var i := 0 to Pred(AContainer.ComponentCount) do
+  begin
+    if not (AContainer.Components[i] is TFrameEntry) then
+      continue;
+
+    var LEntry := (AContainer.Components[i] as TFrameEntry);
+
+    if not LEntry.cbPush.Checked then
+      continue;
+
+    Inc(Result);
   end;
 end;
 
