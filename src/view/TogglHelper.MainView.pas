@@ -49,6 +49,7 @@ type
     Tag1: TMenuItem;
     NC: TNotificationCenter;
     btnBulkEdit: TButton;
+    cbxVersionControl: TCheckBox;
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnAuthClick(Sender: TObject);
@@ -241,6 +242,11 @@ end;
 
 procedure TfrmMain.CheckVersion;
 begin
+  cbxVersionControl.Checked := SingletonToggl.DoCheckVersion;
+
+  if not SingletonToggl.DoCheckVersion then
+    Exit;
+
   if TVersionControl.IsLastVersion then
     Exit;
 

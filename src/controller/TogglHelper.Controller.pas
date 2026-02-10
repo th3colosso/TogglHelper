@@ -21,6 +21,7 @@ type
     FBaseDate: TDateTime;
     FJSonBody: string;
     FStyleName: string;
+    FDoVersionCheck: Boolean;
     procedure SetApiToken(const AValue: string);
     procedure SaveConfig;
     procedure LoadConfig;
@@ -46,6 +47,7 @@ type
     property ApiToken: string read FApiToken write SetApiToken;
     property BaseDate: TDateTime read FBaseDate;
     property StyleName: string read FStyleName write FStyleName;
+    property DoCheckVersion: Boolean read FDoVersionCheck write FDoVersionCheck;
   end;
 
 var
@@ -231,6 +233,8 @@ end;
 
 procedure TToggleController.LoadConfig;
 begin
+  FDoVersionCheck := True;
+
   if not FileExists(FConfigFile) then
     Exit;
 

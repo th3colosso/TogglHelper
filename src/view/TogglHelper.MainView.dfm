@@ -23,7 +23,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 784
     Height = 625
-    ActivePage = tsEntries
+    ActivePage = tsSettings
     Align = alClient
     TabOrder = 0
     object tsSettings: TTabSheet
@@ -169,6 +169,17 @@ object frmMain: TfrmMain
           Style = csDropDownList
           TabOrder = 0
           OnChange = cbStyleChange
+        end
+        object cbxVersionControl: TCheckBox
+          Left = 24
+          Top = 91
+          Width = 249
+          Height = 17
+          Caption = 'Check for available update on startup'
+          Checked = True
+          State = cbChecked
+          TabOrder = 1
+          Visible = False
         end
       end
     end
