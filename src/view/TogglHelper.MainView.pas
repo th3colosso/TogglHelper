@@ -46,7 +46,6 @@ type
     popSort: TPopupMenu;
     Date1: TMenuItem;
     Description1: TMenuItem;
-    Tag1: TMenuItem;
     NC: TNotificationCenter;
     btnBulkEdit: TButton;
     cbxVersionControl: TCheckBox;
@@ -60,7 +59,6 @@ type
     procedure cbStyleChange(Sender: TObject);
     procedure Description1Click(Sender: TObject);
     procedure Date1Click(Sender: TObject);
-    procedure Tag1Click(Sender: TObject);
     procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
     procedure btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure btnBulkEditMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -305,11 +303,6 @@ begin
     ShellExecute(Self.Handle, 'open', PChar(TVersionControl.DownloadUrl), '', '', SW_SHOWNORMAL);
 end;
 
-procedure TfrmMain.Tag1Click(Sender: TObject);
-begin
-  SingletonToggl.ReorderEntries(sbEntries, TSortParam.Tag);
-end;
-
 procedure TfrmMain.UpdateStatus(AStatus: TStatus);
 begin
   case AStatus of
@@ -363,9 +356,6 @@ begin
       SingletonToggl.Projects.UpdateList;
       SingletonToggl.FillComboBox(cbProjects.Items, SingletonToggl.Projects.List.Keys.ToArray);
       cbProjects.ItemIndex := 0;
-
-      //TAGS
-      SingletonToggl.Tags.UpdateList;
 
       SingletonToggl.RealoadLastEntries(sbEntries);
 

@@ -6,7 +6,6 @@ uses
   TogglHelper.User in 'src\repository\TogglHelper.User.pas',
   TogglHelper.Controller in 'src\controller\TogglHelper.Controller.pas',
   TogglHelper.Projects in 'src\repository\TogglHelper.Projects.pas',
-  TogglHelper.Tags in 'src\repository\TogglHelper.Tags.pas',
   TogglHelper.FrameEntry in 'src\view\TogglHelper.FrameEntry.pas' {FrameEntry: TFrame},
   TogglHelper.EntryHelper in 'src\utils\TogglHelper.EntryHelper.pas',
   Vcl.Themes,

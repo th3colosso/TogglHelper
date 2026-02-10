@@ -33,8 +33,6 @@ begin
   Self.Align := altop;
   SingletonToggl.FillComboBox(Self.cbPrj.Items, SingletonToggl.Projects.List.Keys.ToArray);
   Self.cbPrj.ItemIndex := ADefProjectIndex;
-  SingletonToggl.FillComboBox(Self.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
-  Self.cbTag.ItemIndex := 0;
   Self.tpStart.Time := IncHour(Time, -1);
   Self.tpStop.Time := Time;
   Self.UpdateElapsedTime;
@@ -57,11 +55,6 @@ begin
   AJSON.TryGetValue<Integer>('cb_prj_id', PrjID);
   Self.cbPrj.ItemIndex := PrjID;
 
-  SingletonToggl.FillComboBox(Self.cbTag.Items, SingletonToggl.Tags.List.Keys.ToArray);
-  var TagID := 0;
-  AJSON.TryGetValue<Integer>('cb_tag_id', TagID);
-  Self.cbTag.ItemIndex := TagID;
-
   var EntryTime: Double := 0.0;
   if AJSON.TryGetValue<Double>('time_start', EntryTime) then
     Self.tpStart.Time := EntryTime
@@ -82,13 +75,6 @@ begin
   AJSON.AddPair('created_with', 'TogglHelper');
   AJSON.AddPair('description', Self.edtEntry.Text);
 
-  var TagKey := Self.cbTag.Text;
-  var TagID := 0;
-  var TagArray := TJSONArray.Create;
-  if SingletonToggl.Tags.List.TryGetValue(TagKey, TagID) then
-    TagArray.Add(TagID);
-  AJSON.AddPair('tag_ids', TagArray);
-
   AJSON.AddPair('billable', Self.cbBillable.Checked);
   AJSON.AddPair('workspace_id', SingletonToggl.User.WorkspaceID);
   AJSON.AddPair('user_id', SingletonToggl.User.ID);
@@ -107,7 +93,6 @@ begin
     AJSON.AddPair('project_id', PrjID);
 
   AJSON.AddPair('cb_prj_id', Self.cbPrj.ItemIndex);
-  AJSON.AddPair('cb_tag_id', Self.cbTag.ItemIndex);
   AJSON.AddPair('time_start', Self.tpStart.Time);
   AJSON.AddPair('time_stop', Self.tpStop.Time);
   AJSON.AddPair('tag', Self.Tag);

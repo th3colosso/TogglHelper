@@ -128,7 +128,7 @@
         <DCCReference Include="src\repository\TogglHelper.User.pas"/>
         <DCCReference Include="src\controller\TogglHelper.Controller.pas"/>
         <DCCReference Include="src\repository\TogglHelper.Projects.pas"/>
-        <DCCReference Include="src\repository\TogglHelper.Tags.pas"/>
+        
         <DCCReference Include="src\view\TogglHelper.FrameEntry.pas">
             <Form>FrameEntry</Form>
             <DesignClass>TFrame</DesignClass>

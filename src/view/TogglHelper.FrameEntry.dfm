@@ -41,15 +41,6 @@ object FrameEntry: TFrameEntry
       Height = 15
       Caption = 'Entry Project'
     end
-    object lblTag: TLabel
-      Left = 324
-      Top = 67
-      Width = 49
-      Height = 15
-      Anchors = [akTop, akRight]
-      Caption = 'Entry Tag'
-      ExplicitLeft = 328
-    end
     object lblFrom: TLabel
       Left = 627
       Top = 16
@@ -147,16 +138,6 @@ object FrameEntry: TFrameEntry
       State = cbChecked
       TabOrder = 2
     end
-    object cbTag: TComboBox
-      Left = 324
-      Top = 88
-      Width = 297
-      Height = 23
-      Style = csDropDownList
-      Anchors = [akTop, akRight]
-      Sorted = True
-      TabOrder = 3
-    end
     object tpStart: TDateTimePicker
       Left = 627
       Top = 39
@@ -169,7 +150,7 @@ object FrameEntry: TFrameEntry
       DateFormat = dfLong
       Kind = dtkTime
       ParseInput = True
-      TabOrder = 4
+      TabOrder = 3
       OnChange = tpStartChange
     end
     object tpStop: TDateTimePicker
@@ -184,7 +165,7 @@ object FrameEntry: TFrameEntry
       DateFormat = dfLong
       Kind = dtkTime
       ParseInput = True
-      TabOrder = 5
+      TabOrder = 4
       OnChange = tpStopChange
     end
     object cbPush: TCheckBox
@@ -196,7 +177,7 @@ object FrameEntry: TFrameEntry
       Caption = 'Push to Toggl'
       Checked = True
       State = cbChecked
-      TabOrder = 6
+      TabOrder = 5
     end
   end
 end

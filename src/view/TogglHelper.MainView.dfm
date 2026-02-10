@@ -23,7 +23,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 784
     Height = 625
-    ActivePage = tsSettings
+    ActivePage = tsEntries
     Align = alClient
     TabOrder = 0
     object tsSettings: TTabSheet
@@ -307,10 +307,6 @@ object frmMain: TfrmMain
     object Date1: TMenuItem
       Caption = 'Time'
       OnClick = Date1Click
-    end
-    object Tag1: TMenuItem
-      Caption = 'Tag'
-      OnClick = Tag1Click
     end
   end
   object NC: TNotificationCenter

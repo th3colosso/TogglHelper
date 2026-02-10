@@ -4,7 +4,7 @@ interface
 
 uses
   System.Net.HttpClient, System.Net.URLClient, System.NetEncoding,
-  TogglHelper.User, TogglHelper.Projects, TogglHelper.Tags, System.Classes,
+  TogglHelper.User, TogglHelper.Projects, System.Classes,
   Vcl.StdCtrls, Vcl.Controls, Vcl.Forms, TogglHelper.FrameEntry, System.TimeSpan;
 
 type
@@ -17,7 +17,6 @@ type
     FProjects: TTogglProjects;
     FClient: THTTPClient;
     FResponse: TStringList;
-    FTags: TTogglTags;
     FBaseDate: TDateTime;
     FJSonBody: string;
     FStyleName: string;
@@ -43,7 +42,6 @@ type
     property Response: TStringList read FResponse;
     property User: TTogglUser read FUser;
     property Projects: TTogglProjects read FProjects;
-    property Tags: TTogglTags read FTags;
     property ApiToken: string read FApiToken write SetApiToken;
     property BaseDate: TDateTime read FBaseDate;
     property StyleName: string read FStyleName write FStyleName;
@@ -129,7 +127,6 @@ begin
             TSortParam.Default: Result := CompareValue(Left.Tag, Right.Tag);
             TSortParam.Description: Result := CompareStr(Left.edtEntry.Text, Right.edtEntry.Text);
             TSortParam.Time: Result := CompareTime(Left.tpStart.Time, Right.tpStart.Time);
-            TSortParam.Tag: Result := CompareStr(Left.cbTag.Text, Right.cbTag.Text);
           else
             Result := 0;
           end;
@@ -152,7 +149,6 @@ end;
 procedure TToggleController.Reset;
 begin
   FProjects.List.Clear;
-  FTags.List.Clear;
 end;
 
 constructor TToggleController.Create;
@@ -166,7 +162,6 @@ begin
 
   FUser := TTogglUser.Create(FClient, FResponse);
   FProjects := TTogglProjects.Create(FClient, FResponse);
-  FTags := TTogglTags.Create(FClient, FResponse);
   LoadConfig;
 end;
 
@@ -174,7 +169,6 @@ destructor TToggleController.Destroy;
 begin
   SaveConfig;
   FProjects.Free;
-  FTags.Free;
   FClient.Free;
   FUser.Free;
   FResponse.Free;

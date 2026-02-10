@@ -9,7 +9,7 @@ uses
 
 type
 {$SCOPEDENUMS ON}
-  TSortParam = (Default, Description, Time, Tag);
+  TSortParam = (Default, Description, Time);
 {$SCOPEDENUMS OFF}
 
   TProcReorder = procedure(AComponent: TScrollBox; ASortParam: TSortParam = TSortParam.Default) of object;
@@ -18,14 +18,12 @@ type
     pnlMain: TPanel;
     lblTitle: TLabel;
     lblPrj: TLabel;
-    lblTag: TLabel;
     lblFrom: TLabel;
     lblTo: TLabel;
     imgClose: TImage;
     edtEntry: TEdit;
     cbPrj: TComboBox;
     cbBillable: TCheckBox;
-    cbTag: TComboBox;
     tpStart: TDateTimePicker;
     tpStop: TDateTimePicker;
     cbPush: TCheckBox;
