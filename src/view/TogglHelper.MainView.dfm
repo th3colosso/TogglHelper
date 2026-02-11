@@ -179,7 +179,7 @@ object frmMain: TfrmMain
           Checked = True
           State = cbChecked
           TabOrder = 1
-          Visible = False
+          OnClick = cbxVersionControlClick
         end
       end
     end

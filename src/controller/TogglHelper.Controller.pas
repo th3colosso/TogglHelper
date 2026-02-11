@@ -22,6 +22,7 @@ type
     FStyleName: string;
     FDoVersionCheck: Boolean;
     procedure SetApiToken(const AValue: string);
+    procedure SetDoVersionCheck(const AValue: Boolean);
     procedure SaveConfig;
     procedure LoadConfig;
     procedure SetClientHeaders;
@@ -45,7 +46,7 @@ type
     property ApiToken: string read FApiToken write SetApiToken;
     property BaseDate: TDateTime read FBaseDate;
     property StyleName: string read FStyleName write FStyleName;
-    property DoCheckVersion: Boolean read FDoVersionCheck write FDoVersionCheck;
+    property DoCheckVersion: Boolean read FDoVersionCheck write SetDoVersionCheck;
   end;
 
 var
@@ -227,8 +228,6 @@ end;
 
 procedure TToggleController.LoadConfig;
 begin
-  FDoVersionCheck := True;
-
   if not FileExists(FConfigFile) then
     Exit;
 
@@ -247,6 +246,10 @@ begin
         FStyleName := AppStyle;
         TStyleManager.TrySetStyle(AppStyle, False);
       end;
+
+      var LCheck: Boolean;
+      if JConfig.TryGetValue<Boolean>('check_for_updates', LCheck) then
+        FDoVersionCheck := LCheck;
 
     finally
       JConfig.Free;
@@ -341,13 +344,13 @@ end;
 
 procedure TToggleController.SaveConfig;
 begin
-  if FApiToken.Trim.IsEmpty then
-    Exit;
-
   var JConfig := TJSONObject.Create;
   try
-    JConfig.AddPair('api_token', FApiToken.Trim);
+    if not FApiToken.Trim.IsEmpty then
+      JConfig.AddPair('api_token', FApiToken.Trim);
+
     JConfig.AddPair('app_theme', FStyleName);
+    JConfig.AddPair('check_for_updates', TJSONBool.Create(FDoVersionCheck));
 
     var Stream := TStringStream.Create(JConfig.Format(2), TEncoding.UTF8);
     try
@@ -358,6 +361,15 @@ begin
   finally
     JConfig.Free;
   end;
+end;
+
+procedure TToggleController.SetDoVersionCheck(const AValue: Boolean);
+begin
+  if FDoVersionCheck = AValue then
+    Exit;
+
+  FDoVersionCheck := AValue;
+  SaveConfig;
 end;
 
 procedure TToggleController.SetClientHeaders;

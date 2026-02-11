@@ -57,6 +57,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
     procedure cbStyleChange(Sender: TObject);
+    procedure cbxVersionControlClick(Sender: TObject);
     procedure Description1Click(Sender: TObject);
     procedure Date1Click(Sender: TObject);
     procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
@@ -257,6 +258,11 @@ begin
   finally
     Noti.Free;
   end;
+end;
+
+procedure TfrmMain.cbxVersionControlClick(Sender: TObject);
+begin
+  SingletonToggl.DoCheckVersion := cbxVersionControl.Checked;
 end;
 
 procedure TfrmMain.Date1Click(Sender: TObject);
