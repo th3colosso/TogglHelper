@@ -208,6 +208,13 @@ object frmMain: TfrmMain
           Height = 15
           Caption = 'Date'
         end
+        object lblWeekday: TLabel
+          Left = 367
+          Top = 13
+          Width = 49
+          Height = 15
+          Caption = 'Thursday'
+        end
         object cbProjects: TComboBox
           Left = 59
           Top = 43
@@ -251,6 +258,7 @@ object frmMain: TfrmMain
           Font.Name = 'Segoe UI'
           Font.Style = []
           TabOrder = 3
+          OnChange = dpBaseChange
         end
         object actIndicator: TActivityIndicator
           Left = 594
