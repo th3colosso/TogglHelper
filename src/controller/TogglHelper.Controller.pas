@@ -47,6 +47,7 @@ type
     property BaseDate: TDateTime read FBaseDate;
     property StyleName: string read FStyleName write FStyleName;
     property DoCheckVersion: Boolean read FDoVersionCheck write SetDoVersionCheck;
+    property LastSentDay: TDateTime read FBaseDate write FBaseDate;
   end;
 
 var
@@ -160,6 +161,7 @@ begin
   FClient := THTTPClient.Create;
   FResponse := TStringList.Create;
   FResponse.OnChange := OnResponseChange;
+  FBaseDate := 0;
 
   FUser := TTogglUser.Create(FClient, FResponse);
   FProjects := TTogglProjects.Create(FClient, FResponse);

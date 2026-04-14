@@ -180,6 +180,13 @@ end;
 
 procedure TfrmMain.btnPushClick(Sender: TObject);
 begin
+  if SingletonToggl.LastSentDay.IsSameDay(dpBase.Date) then
+  begin
+    var LMsg := 'Entries for the selected date have already been pushed to Toggl.' + SLineBreak + sLineBreak + ' Continue current push operation?';
+    if not (MessageDlg(LMsg, TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbCancel], 0) = mrOk) then
+      Exit;
+  end;
+
   var LSpan := SingletonToggl.GetTotalTimeSpan(sbEntries);
   var LValidEntries := SingletonToggl.GetValidEntries(sbEntries);
   var LMsg := Format('Pushing to toggle [%d] entries with a total workload of %.2dh%.2dm.',
