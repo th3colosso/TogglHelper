@@ -208,13 +208,6 @@ object frmMain: TfrmMain
           Height = 15
           Caption = 'Date'
         end
-        object lblWeekday: TLabel
-          Left = 367
-          Top = 13
-          Width = 49
-          Height = 15
-          Caption = 'Thursday'
-        end
         object cbProjects: TComboBox
           Left = 59
           Top = 43
@@ -250,7 +243,7 @@ object frmMain: TfrmMain
           Width = 302
           Height = 25
           Date = 45840.000000000000000000
-          DateFormat = 'dd/mm/yyyy'
+          DateFormat = 'dddd/dd/mm/yyyy'
           DropDownCount = 8
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -258,7 +251,6 @@ object frmMain: TfrmMain
           Font.Name = 'Segoe UI'
           Font.Style = []
           TabOrder = 3
-          OnChange = dpBaseChange
         end
         object actIndicator: TActivityIndicator
           Left = 594
@@ -306,8 +298,8 @@ object frmMain: TfrmMain
   object popSort: TPopupMenu
     AutoHotkeys = maManual
     TrackButton = tbLeftButton
-    Left = 432
-    Top = 36
+    Left = 452
+    Top = 68
     object Description1: TMenuItem
       Caption = 'Description'
       OnClick = Description1Click
@@ -319,7 +311,7 @@ object frmMain: TfrmMain
   end
   object NC: TNotificationCenter
     OnReceiveLocalNotification = NCReceiveLocalNotification
-    Left = 384
-    Top = 36
+    Left = 504
+    Top = 68
   end
 end

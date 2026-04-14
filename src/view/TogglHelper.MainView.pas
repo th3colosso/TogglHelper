@@ -35,7 +35,6 @@ type
     btnAdd: TButton;
     btnPush: TButton;
     lblData: TLabel;
-    lblWeekday: TLabel;
     dpBase: TDatePicker;
     lblUserID: TLabel;
     edtUserID: TEdit;
@@ -64,7 +63,6 @@ type
     procedure NCReceiveLocalNotification(Sender: TObject; ANotification: TNotification);
     procedure btnSortMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure btnBulkEditMouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure dpBaseChange(Sender: TObject);
   private
     procedure Authenticate;
     procedure UpdateBaseData;
@@ -72,7 +70,6 @@ type
     procedure UpdateStatus(AStatus: TStatus);
     procedure LoadStyles;
     procedure CheckVersion;
-    procedure UpdateWeekdayLabel;
   end;
 
 var
@@ -92,7 +89,6 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   pcMain.ActivePage := tsEntries;
   dpBase.Date := Date;
-  UpdateWeekdayLabel;
   LoadStyles;
   CheckVersion;
 end;
@@ -279,11 +275,6 @@ begin
   SingletonToggl.ReorderEntries(sbEntries, TSortParam.Description);
 end;
 
-procedure TfrmMain.dpBaseChange(Sender: TObject);
-begin
-  UpdateWeekdayLabel;
-end;
-
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   if not SingletonToggl.ApiToken.Trim.IsEmpty then
@@ -381,20 +372,9 @@ begin
         UpdateStatus(TStatus.Error);
       end;
     end;
-  end
-  );
+  end);
 
 end;
 
-procedure TfrmMain.UpdateWeekdayLabel;
-var
-  WeekdayName: string;
-begin
-  WeekdayName := FormatDateTime('dddd', dpBase.Date);
-  if not WeekdayName.IsEmpty then
-    WeekdayName[1] := UpCase(WeekdayName[1]);
-
-  lblWeekday.Caption := WeekdayName;
-end;
 
 end.
