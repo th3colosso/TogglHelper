@@ -8,9 +8,10 @@ uses
 
 type
   TEntryHelper = class Helper for TFrameEntry
-    procedure MapToJSON(AJSON: TJSONObject);
-    procedure MapFromJson(AJSON: TJSONObject);
-    procedure Init(ADefProjectIndex: Integer);
+    procedure ZeroSeconds;
+    procedure MapToJSON(const AJSON: TJSONObject);
+    procedure MapFromJson(const AJSON: TJSONObject);
+    procedure Init(const ADefProjectIndex: Integer);
   end;
 
 implementation
@@ -23,7 +24,7 @@ uses
 
 { TEntryHelper }
 
-procedure TEntryHelper.Init(ADefProjectIndex: Integer);
+procedure TEntryHelper.Init(const ADefProjectIndex: Integer);
 begin
   Self.Name := 'Entry_' + FormatDateTime('HH_NN_SS_ZZZ', Now);
   Self.Tag := Self.Owner.ComponentCount;
@@ -40,7 +41,7 @@ begin
   Self.OnTagReorder := SingletonToggl.ReorderEntries;
 end;
 
-procedure TEntryHelper.MapFromJson(AJSON: TJSONObject);
+procedure TEntryHelper.MapFromJson(const AJSON: TJSONObject);
 begin
   var JTag := 0;
   if AJSON.TryGetValue<Integer>('tag', JTag) then
@@ -70,7 +71,7 @@ begin
   Self.UpdateElapsedTime;
 end;
 
-procedure TEntryHelper.MapToJSON(AJSON: TJSONObject);
+procedure TEntryHelper.MapToJSON(const AJSON: TJSONObject);
 begin
   AJSON.AddPair('created_with', 'TogglHelper');
   AJSON.AddPair('description', Self.edtEntry.Text);
@@ -79,10 +80,9 @@ begin
   AJSON.AddPair('workspace_id', SingletonToggl.User.WorkspaceID);
   AJSON.AddPair('user_id', SingletonToggl.User.ID);
 
+  ZeroSeconds;
   var Start: TDateTime := Self.tpStart.Time + SingletonToggl.BaseDate;
   var Stop: TDateTime := Self.tpStop.Time + SingletonToggl.BaseDate;
-  Start := RecodeSecond(Start, 0);
-  Stop := RecodeSecond(Stop, 0);
   var Duration := SecondsBetween(Start, Stop);
   AJSON.AddPair('duration', Duration);
   AJSON.AddPair('start', FormatDateTime('YYYY"-"MM"-"DD"T"HH":"NN":"SS"."000"-03:00"', Start));
@@ -96,6 +96,16 @@ begin
   AJSON.AddPair('time_start', Self.tpStart.Time);
   AJSON.AddPair('time_stop', Self.tpStop.Time);
   AJSON.AddPair('tag', Self.Tag);
+end;
+
+procedure TEntryHelper.ZeroSeconds;
+var
+  H, N, S, MS: Word;
+begin
+  DecodeTime(Self.tpStart.Time, H, N, S, MS);
+  Self.tpStart.Time := EncodeTime(H, N, 0, 0);
+  DecodeTime(Self.tpStop.Time, H, N, S, MS);
+  Self.tpStop.Time := EncodeTime(H, N, 0, 0);
 end;
 
 end.

@@ -33,7 +33,6 @@ type
     procedure pnlMainDragDrop(Sender, Source: TObject; X, Y: Integer);
     procedure pnlMainDragOver(Sender, Source: TObject; X, Y: Integer; State: TDragState; var Accept: Boolean);
     procedure tpStartChange(Sender: TObject);
-    procedure ZeroSeconds;
     procedure UpdateElapsedTime;
     procedure tpStopChange(Sender: TObject);
   private
@@ -47,7 +46,7 @@ type
 implementation
 
 uses
-  System.DateUtils;
+  System.DateUtils, TogglHelper.EntryHelper;
 
 {$R *.dfm}
 
@@ -118,15 +117,9 @@ end;
 
 procedure TFrameEntry.UpdateElapsedTime;
 begin
-  ZeroSeconds;
+  Self.ZeroSeconds;
   ElapsedTime := TTimeSpan.FromSeconds(tpStart.DateTime.SecondSpan(tpStop.DateTime));
   lblHours.Caption := Format('%.2dh%.2dm', [ElapsedTime.Hours + (ElapsedTime.Days * 24), ElapsedTime.Minutes]);
-end;
-
-procedure TFrameEntry.ZeroSeconds;
-begin
-  RecodeSecond(tpStart.DateTime, 0);
-  RecodeSecond(tpStop.DateTime, 0);
 end;
 
 end.
